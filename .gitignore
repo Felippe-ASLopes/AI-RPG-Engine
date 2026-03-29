@@ -1,0 +1,118 @@
+# ==========================================
+# FELPINHO's RPG ENGINE - .gitignore Global
+# ==========================================
+
+# ------------------------------------------
+# 1. Sistema Operacional e IDEs
+# ------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+.cursor/
+
+# ------------------------------------------
+# 2. Frontend (React / TypeScript / Node)
+# -> Diretório: apps/frontend/
+# ------------------------------------------
+node_modules/
+dist/
+build/
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ------------------------------------------
+# 3. Tauri (Rust)
+# -> Diretório: apps/frontend/src-tauri/
+# ------------------------------------------
+# Ignora os binários compilados pesados do Rust
+apps/frontend/src-tauri/target/
+# Arquivos gerados no build
+*.rs.bk
+
+# ------------------------------------------
+# 4. Backend (Python / FastAPI)
+# -> Diretório: apps/backend/
+# ------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.env
+.venv
+venv/
+ENV/
+# Ocultar o .env global que pode conter chaves de API externas
+.env
+
+# ------------------------------------------
+# 5. Bancos de Dados Locais e Vetoriais
+# -> Diretório: data/
+# ------------------------------------------
+# Ignorar bancos SQLite dinâmicos (Saves da campanha, inventário)
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+
+# Ignorar os dados cacheados do ChromaDB (pesados e gerados dinamicamente)
+# (Mantenha o diretório chromadb/ mas ignore seu conteúdo indexado)
+data/chromadb/*
+!data/chromadb/.gitkeep
+
+# ------------------------------------------
+# 6. Arquivos Temporários do RPG e Logs
+# ------------------------------------------
+# O arquivo de log único definido no Épico 18 e 19
+session.log
+*.log
+
+# Buffer temporário do Épico 11 (Sistema de Desfazer/Rollback)
+# Ignora os 5 arquivos .json gerados no SSD temporariamente
+undo_buffer_*.json
+temp_state_*.json
+
+# ------------------------------------------
+# 7. Modelos de IA e Assets Pesados
+# ------------------------------------------
+# Previne que você commite sem querer os modelos GGUF, LoRAs ou Safetensors
+*.gguf
+*.bin
+*.safetensors
+*.pt
+*.ckpt
+*.onnx
+
+# Ignorar imagens geradas durante a gameplay, mas manter a pasta
+data/Assets/Generated/*
+!data/Assets/Generated/.gitkeep
+
+# Obs: As pastas data/Assets/Scenery e data/Assets/Characters DEVEM ser trackeadas
+# para manter a base do seu "Atlas Local", contanto que contenham apenas jpg/png/json leves.
