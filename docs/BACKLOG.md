@@ -62,11 +62,11 @@
 
 ## PARTE 2: REQUISITOS FUNCIONAIS (MECÂNICAS, LÓGICA DE USUÁRIO E UI)
 
-### FASE 4: Setup, Presets e Arquitetura de Campanha (Depende do BD/Memória)
+### FASE 4: Setup, Presets e Arquitetura de Campanha (Depende do BD/Memória) [CONCLUÍDO]
 * ÉPICO 14: ASSISTENTE DE CRIAÇÃO DE CAMPANHA (THE WIZARD)
     * História de Usuário: Como jogador, quero um guia visual e textual para configurar minha ficha, NPCs e o "esqueleto" da história, para que o mundo seja coerente desde o primeiro turno.
-    * Requisito Funcional 14.1 (Modos de Início): QuickStart (A LLM gera Nome, Background e Atributos baseados em um tema) e Custom (Formulários detalhados para Personagem, Companheiros e Rivais).
-    * Requisito Funcional 14.2 (Formulários de Atributos): Cada entidade criada deve possuir campos obrigatórios: Aparência, Personalidade, Poder/Habilidade, Benefícios e Malefícios.
+    * Requisito Funcional 14.1 (Criação Dinâmica e Preenchimento Assistido): Todos os campos do setup de campanha são opcionais para o usuário. O jogador pode preencher o que desejar, e o sistema deve analisar os dados parciais. A IA (LLM) assumirá a responsabilidade de gerar e preencher exclusivamente os campos que foram deixados em branco, respeitando o contexto dos dados já fornecidos.
+    * Requisito Funcional 14.2 (Formulários de Atributos): Cada entidade criada deve possuir campos obrigatórios no estado final: Aparência, Personalidade, Poder/Habilidade, Benefícios e Malefícios.
     * Requisito Funcional 14.3 (Roteiro de Pontos de Trama): Implementar um sistema de "Milestones" (Marcos).
 * ÉPICO 15: INTEGRAÇÃO VISUAL NO SETUP
     * História de Usuário: Como mestre, quero associar imagens aos meus itens e locais durante a criação para que a IA de imagem saiba o que replicar.
@@ -135,6 +135,15 @@
     * Requisito Funcional 32.1 (Bloqueio de Contexto Narrativo): Implementar o comando ?mestre [pergunta]. Ao ser acionado, o sistema congela o buffer de chat atual e impede que a resposta da IA seja escrita no arquivo de histórico da campanha.
     * Requisito Funcional 32.2 (Processamento de Baixo Custo): A consulta deve desativar o pipeline de imagem (ComfyUI) e focar apenas na recuperação de dados do RAG ou Atlas Local para responder.
     * Requisito Funcional 32.3 (Preservação de Turno): Após a resposta da IA, a interface deve restaurar exatamente o estado do input do jogador, permitindo que ele continue sua jogada original com a nova informação.
+* ÉPICO 36: EXTRAÇÃO DE PRESETS EM TEMPO REAL (IN-GAME EXPORT) [CONCLUÍDO]
+    * História de Usuário: Como mestre/jogador, quero poder salvar personagens, objetos ou locais criados espontaneamente pela IA durante a campanha, para reutilizá-los em outras aventuras no futuro.
+    * Requisito Funcional 36.1 (Comando de Extração): Implementar o comando `!save --entity @tag`. O sistema deve isolar a requisição e não avançar o tempo da narrativa.
+    * Requisito Funcional 36.2 (Recuperação RAG): O sistema deve consultar o banco vetorial (ChromaDB) e o buffer de contexto em busca de menções e descrições prévias da `@tag`.
+    * Requisito Funcional 36.3 (Formatação por IA): A LLM deve receber os fragmentos de memória e formatar a entidade no padrão estruturado `EntityAttributes` (JSON). Se for um objeto/local, a IA deve adaptar criativamente os campos (ex: 'personality' vira 'comportamento mágico/atmosfera').
+    * Requisito Funcional 36.4 (Persistência Automática): O resultado final validado deve ser salvo automaticamente na `/Global_Library` pelo `PresetRepository`.
+    para analise futura: 'No seu controlador principal (no FastAPI), quando o usuário enviar uma mensagem, você vai fazer um parser inicial:' 'if message.startswith("!save --entity"):
+    resposta = await in_game_entity_export_usecase.execute_extraction(message)
+    # Exibe a resposta na tela do jogador sem avançar o turno da história'
 
 ### FASE 7: Interface de Usuário (HUD e UX) (Depende da Lógica e Estados)
 * ÉPICO 20: SISTEMA DE AUTOCOMPLETE INTELIGENTE (@MAPPING)

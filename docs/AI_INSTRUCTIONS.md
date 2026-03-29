@@ -58,6 +58,7 @@ O backend em Python DEVE respeitar rigorosamente as seguintes camadas:
 - **Nomenclatura:** `snake_case` para variáveis, funções e nomes de arquivos (ex: `vram_optimizer.py`). `PascalCase` para Classes.
 - **Tipagem:** O uso de Type Hints é OBRIGATÓRIO em todas as funções (ex: `def get_context(query: str) -> dict:`).
 - **Logs:** Utilize sempre o módulo Singleton `logger.py` para rastreabilidade, formato: `[HH:MM:SS:ms] [MODULO] Mensagem`. Evite `print()` genéricos.
+- **Centralização de Prompts:** Todos os textos de instrução para a IA (System Prompts e Templates de Usuário) DEVEM ser obrigatoriamente armazenados em `Enum` na camada de domínio (`src/domain/prompts.py`). É ESTRITAMENTE PROIBIDO fazer hard-code de strings de prompt dentro dos Casos de Uso ou Adaptadores.
 
 ### Frontend (TypeScript / React)
 - **Estilo:** Componentização estrita e hooks customizados para lógica de estado.

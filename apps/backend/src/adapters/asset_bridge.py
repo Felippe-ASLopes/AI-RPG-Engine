@@ -56,3 +56,26 @@ class AssetBridgeAdapter:
         except Exception as e:
             logger.error(f"Erro ao ler metadados de {entity_name}: {str(e)}")
             return ""
+        
+    def save_entity_image(self, safe_name: str, category: str, image_bytes: bytes, extension: str) -> str:
+        """
+        Salva fisicamente o arquivo binário da imagem no Atlas Local (Requisito 15.1).
+        Retorna o caminho relativo que será salvo no SQLite/JSON da campanha.
+        """
+        target_folder = self.characters_path if category == "Characters" else self.scenery_path
+        
+        file_name = f"{safe_name}{extension}"
+        file_path = target_folder / file_name
+        
+        try:
+            with open(file_path, "wb") as f:
+                f.write(image_bytes)
+            
+            # Retornamos um caminho amigável para o frontend consumir depois
+            relative_path = f"data/Assets/{category}/{file_name}"
+            logger.info(f"Asset visual salvo com sucesso: {relative_path}")
+            return relative_path
+            
+        except Exception as e:
+            logger.error(f"Falha ao escrever arquivo de imagem {file_name} no disco: {str(e)}")
+            raise IOError("Não foi possível salvar a imagem no servidor local.") from e

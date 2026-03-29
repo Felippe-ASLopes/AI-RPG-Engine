@@ -1,7 +1,7 @@
 import httpx
 from typing import List
 from src.domain.llm import LLMGenerationRequest, LLMGenerationResponse, ChatMessage
-from src.domain.prompts import RPG_SYSTEM_PROMPT
+from src.domain.prompts import SystemPrompts
 
 class KoboldCPPAdapter:
     def __init__(self, base_url: str = "http://localhost:5001/v1"):
@@ -10,7 +10,7 @@ class KoboldCPPAdapter:
     # Gera uma resposta assíncrona comunicando-se com a API do KoboldCPP.
     async def generate_text(self, request: LLMGenerationRequest, additional_system_context: str = "") -> LLMGenerationResponse:
         # Constrói o System Prompt final injetando contexto adicional (metadados/RAG)
-        final_system_prompt = RPG_SYSTEM_PROMPT
+        final_system_prompt = SystemPrompts.RPG_MASTER.value
         if additional_system_context:
             final_system_prompt += f"\n\nCONTEXTO ADICIONAL DA CENA:\n{additional_system_context}"
 
