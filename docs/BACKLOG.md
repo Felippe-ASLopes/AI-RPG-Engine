@@ -2,7 +2,7 @@
 
 ## PARTE 1: REQUISITOS TÉCNICOS (INFRAESTRUTURA E BACKEND)
 
-### FASE 1: Infraestrutura Core e Orquestração (Dependência Zero)
+### FASE 1: Infraestrutura Core e Orquestração (Dependência Zero) [CONCLUÍDO]
 * ÉPICO 1: INFRAESTRUTURA DE IA DE TEXTO (LLM)
     * História de Usuário: Como jogador, quero que a IA responda rapidamente e com boa escrita, para que a narrativa não seja interrompida.
     * Tarefa 1.1: Instalar e configurar KoboldCPP ou LM Studio com suporte a DirectML/ZLUDA para AMD.
@@ -12,7 +12,7 @@
     * História de Usuário: Como usuário de uma GPU de 8GB, quero que o sistema alterne entre modelos de texto e imagem automaticamente para evitar travamentos do Windows.
     * Tarefa 2.1: Desenvolver script de VRAM_Optimizer para monitorar uso de memória em tempo real.
     * Tarefa 2.2: Criar rotina de "unloading" do modelo de texto após a geração do parágrafo.
-* ÉPICO 18: MÓDULO DE LOG CENTRALIZADO (CHRONOS LOGGER)
+* ÉPICO 18: MÓDULO DE LOG CENTRALIZADO (LOGGER)
     * História de Usuário: Como desenvolvedor, quero ver o que está acontecendo no backend em tempo real para entender o fluxo de dados e o gerenciamento de hardware.
     * Requisito Funcional 18.1 (Singleton Logger): Desenvolver um módulo único logger.py que possa ser importado em qualquer parte do projeto.
     * Requisito Funcional 18.2 (Formatação de Log): Todo log deve seguir o padrão: [HH:MM:SS:ms] [MODULO] Mensagem de Status.
@@ -35,12 +35,12 @@
     * Tarefa 6.2: Criar filtro de "Sanity Check" para evitar que a IA traga lixo da web para dentro do RPG.
 
 ### FASE 3: Persistência, Memória e Contexto (Depende da Infra e IA)
-* ÉPICO 3: SISTEMA DE CONTEXTO LOCAL E ATLAS VISUAL (ASSET BRIDGE)
+* ÉPICO 3: SISTEMA DE CONTEXTO LOCAL E ATLAS VISUAL (ASSET BRIDGE) [CONCLUÍDO]
     * História de Usuário: Como mestre/autor, quero que a IA utilize minhas imagens e descrições reais para manter a verossimilhança.
     * Tarefa 3.1: Criar estrutura de pastas /Assets/Scenery e /Metadata.
     * Tarefa 3.2: Desenvolver o script AssetBridge para indexar arquivos .jpg/.png e .md/.json correspondentes.
     * Tarefa 3.3: Implementar função de injeção de metadados no prompt da LLM quando palavras-chave forem detectadas.
-* ÉPICO 4: MEMÓRIA DE LONGO PRAZO (RAG)
+* ÉPICO 4: MEMÓRIA DE LONGO PRAZO (RAG) [CONCLUÍDO]
     * História de Usuário: Como jogador de sessões longas, quero que a IA lembre de decisões tomadas há semanas para que o mundo pareça vivo.
     * Tarefa 4.1: Configurar ChromaDB local para armazenamento de vetores de chat.
     * Tarefa 4.2: Ajustar o "k-nearest neighbors" (k-NN) para recuperar apenas as 3 memórias mais relevantes por turno.

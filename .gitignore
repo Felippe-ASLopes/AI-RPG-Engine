@@ -114,5 +114,24 @@ temp_state_*.json
 data/Assets/Generated/*
 !data/Assets/Generated/.gitkeep
 
+# ------------------------------------------
+# 8. Caches de Teste e Diretórios Virtuais Extras
+# ------------------------------------------
+.pytest_cache/
+.venv/
+.venv
+
+# ------------------------------------------
+# 9. Novos Diretórios de Banco de Dados e Modelos
+# ------------------------------------------
+# Ignorar banco vetorial de testes
+data/chromadb_test/*
+!data/chromadb_test/.gitkeep
+
+# Ignorar TODOS os modelos de IA e binários do motor
+AI/models/*
+!AI/models/.gitkeep
+koboldcpp.exe
+
 # Obs: As pastas data/Assets/Scenery e data/Assets/Characters DEVEM ser trackeadas
 # para manter a base do seu "Atlas Local", contanto que contenham apenas jpg/png/json leves.

@@ -64,3 +64,29 @@ Para garantir a verossimilhança do mundo e forçar a criatividade da IA dentro 
 - **Limite de VRAM (Hard Constraint):** O uso da GPU não pode exceder 7.5GB. O uso simultâneo de texto e imagem de alta qualidade deve ser bloqueado pelo orquestrador.
 - **Compatibilidade:** O código de IA deve evitar dependências exclusivas de CUDA, priorizando Vulkan, DirectML ou ZLUDA para compatibilidade nativa com a RX 7600.
 - **Latência de Swap:** O Tauri precisará gerenciar estados visuais de carregamento enquanto os pesos dos modelos são transferidos entre RAM e VRAM durante os turnos.
+
+## 9. COMO EXECUTAR (SETUP MANUAL)
+
+Siga os passos abaixo para preparar o ambiente local e rodar os motores de IA.
+
+### A. Preparando o Ambiente Python
+1. Abra o terminal na pasta do backend: `cd apps/backend`
+2. Crie o ambiente virtual: `python -m venv venv`
+3. Ative o ambiente:
+   - CMD: `.\venv\Scripts\activate`
+4. Instale as dependências: `pip install -r requirements.txt`
+   *(Certifique-se de que fastapi, uvicorn, chromadb e sentence-transformers estão listados no arquivo)*
+
+### B. Baixando e Iniciando o Motor de Texto (LLM)
+1. Baixe o **KoboldCPP** (versão portátil mais recente): 
+   [https://github.com/LostRuins/koboldcpp/releases](https://github.com/LostRuins/koboldcpp/releases) e coloque o arquivo `koboldcpp.exe` em AI-RPG-ENGINE/AI/.
+2. Baixe o modelo **Llama 3.1 8B Instruct (Quantização Q4_K_M)**:
+   [https://huggingface.co/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/resolve/main/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf](https://huggingface.co/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/resolve/main/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf?download=true)
+3. Mova para a pasta AI-RPG-ENGINE/AI/models/.
+4. Execute o arquivo `start_llm.bat` para iniciar o servidor local na porta 5001 utilizando a interface Vulkan.
+
+### C. Executando o Servidor Backend
+Com o ambiente virtual ativado e o KoboldCPP rodando no plano de fundo, inicie o orquestrador:
+```bash
+python main.py
+```

@@ -72,3 +72,8 @@ O backend em Python DEVE respeitar rigorosamente as seguintes camadas:
 
 ## 7. INSTRUÇÃO OPERACIONAL PARA O AGENTE
 Antes de iniciar a escrita de qualquer código, identifique a qual camada da arquitetura ele pertence. Se for implementar uma integração externa, crie a interface no diretório `domain/` antes de codificar o adaptador em `adapters/`.
+
+## 8. TEST-DRIVEN DEVELOPMENT (TDD)
+- **Cultura de Testes:** Antes de iniciar a implementação do código fonte de qualquer novo Épico ou Funcionalidade, o agente DEVE escrever primeiro os testes unitários utilizando o framework `pytest` para backend e ? para frontend.
+- **Cobertura Mínima:** Os testes devem cobrir fluxos de sucesso e fluxos de exceção (ex: arquivo não encontrado, limite excedido).
+- **Assincronicidade:** Testes de rotinas assíncronas devem utilizar o decorador `@pytest.mark.asyncio`.
