@@ -64,3 +64,25 @@ class VectorMemoryAdapter:
         except Exception as e:
             logger.error(f"Erro ao recuperar memórias do RAG: {str(e)}")
             return []
+    
+    def switch_campaign_collection(self, campaign_name: str):
+        """
+        (Épico 35) Isola o contexto RAG mudando a collection ativa para a campanha carregada.
+        Isso previne que a IA puxe memórias de outro save.
+        """
+        # Sanitiza o nome para o ChromaDB (letras minúsculas, números e underscores)
+        safe_name = "".join(c if c.isalnum() else "_" for c in campaign_name).strip("_").lower()
+        if not safe_name:
+            safe_name = "default_campaign"
+
+        collection_name = f"campaign_{safe_name}"
+
+        try:
+            self.collection = self.client.get_or_create_collection(
+                name=collection_name,
+                metadata={"hnsw:space": "cosine"},
+                embedding_function=self.emb_fn
+            )
+            logger.info(f"RAG: Banco vetorial isolado. Collection ativa: '{collection_name}'.")
+        except Exception as e:
+            logger.error(f"RAG: Erro ao isolar memórias para {campaign_name}: {str(e)}")

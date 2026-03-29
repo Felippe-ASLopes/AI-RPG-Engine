@@ -75,5 +75,8 @@ Antes de iniciar a escrita de qualquer código, identifique a qual camada da arq
 
 ## 8. TEST-DRIVEN DEVELOPMENT (TDD)
 - **Cultura de Testes:** Antes de iniciar a implementação do código fonte de qualquer novo Épico ou Funcionalidade, o agente DEVE escrever primeiro os testes unitários utilizando o framework `pytest` para backend e ? para frontend.
+- **Separação de Escopo:**
+  - `backend/tests/`: Contém APENAS testes unitários. As classes devem ser testadas em isolamento absoluto usando mocks para repositórios ou dependências externas.
+  - `backend/tests/integrated/`: Contém testes de integração e orquestração. Verifica se Casos de Uso (Use Cases) estão acionando corretamente os Adaptadores (Adapters) e serviços externos (VRAM, Bancos de Dados).
 - **Cobertura Mínima:** Os testes devem cobrir fluxos de sucesso e fluxos de exceção (ex: arquivo não encontrado, limite excedido).
 - **Assincronicidade:** Testes de rotinas assíncronas devem utilizar o decorador `@pytest.mark.asyncio`.

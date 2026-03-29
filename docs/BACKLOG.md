@@ -34,13 +34,13 @@
     * Tarefa 6.1: Integrar API de busca (Serper ou DuckDuckGo) ao orquestrador.
     * Tarefa 6.2: Criar filtro de "Sanity Check" para evitar que a IA traga lixo da web para dentro do RPG.
 
-### FASE 3: Persistência, Memória e Contexto (Depende da Infra e IA)
-* ÉPICO 3: SISTEMA DE CONTEXTO LOCAL E ATLAS VISUAL (ASSET BRIDGE) [CONCLUÍDO]
+### FASE 3: Persistência, Memória e Contexto (Depende da Infra e IA) [CONCLUÍDO]
+* ÉPICO 3: SISTEMA DE CONTEXTO LOCAL E ATLAS VISUAL (ASSET BRIDGE)
     * História de Usuário: Como mestre/autor, quero que a IA utilize minhas imagens e descrições reais para manter a verossimilhança.
     * Tarefa 3.1: Criar estrutura de pastas /Assets/Scenery e /Metadata.
     * Tarefa 3.2: Desenvolver o script AssetBridge para indexar arquivos .jpg/.png e .md/.json correspondentes.
     * Tarefa 3.3: Implementar função de injeção de metadados no prompt da LLM quando palavras-chave forem detectadas.
-* ÉPICO 4: MEMÓRIA DE LONGO PRAZO (RAG) [CONCLUÍDO]
+* ÉPICO 4: MEMÓRIA DE LONGO PRAZO (RAG)
     * História de Usuário: Como jogador de sessões longas, quero que a IA lembre de decisões tomadas há semanas para que o mundo pareça vivo.
     * Tarefa 4.1: Configurar ChromaDB local para armazenamento de vetores de chat.
     * Tarefa 4.2: Ajustar o "k-nearest neighbors" (k-NN) para recuperar apenas as 3 memórias mais relevantes por turno.
@@ -53,7 +53,11 @@
     * História de Usuário: Como jogador, quero alternar entre diferentes arquivos de save durante a sessão para testar diferentes decisões.
     * Requisito Funcional 13.1 (Hot-Swap): Implementar o comando !load [nome]. Ao ser executado, o sistema limpa a VRAM do contexto atual e carrega o novo histórico.
     * Requisito Funcional 13.2 (Verificação de Integridade): O sistema deve validar se os modelos de IA (LLM/Diffusion) necessários para aquele save estão disponíveis antes de carregar.
-
+* ÉPICO 35: INTEGRAÇÃO DE HOT-SWAP E LIMPEZA PROFUNDA DE CONTEXTO (PREVENÇÃO DE ALUCINAÇÃO)
+    * História de Usuário: Como jogador, quero que ao carregar um save diferente, a IA esqueça completamente a sessão anterior, limpando a VRAM e os ponteiros do banco vetorial, para que histórias de campanhas distintas não se misturem.
+    * Requisito Funcional 35.1 (Orquestração de Descarregamento): O `LoadManager` deve atuar como orquestrador central, injetando as dependências do `VRAMOptimizer` e `VectorMemoryAdapter`.
+    * Requisito Funcional 35.2 (Flush de VRAM): Ao acionar o `!load`, o sistema deve notificar o `VRAMOptimizer` para limpar os caches do motor de texto ativo.
+    * Requisito Funcional 35.3 (Isolamento de RAG): O sistema deve sinalizar ao adaptador do ChromaDB para trocar a "collection" ativa ou limpar o cache de contexto baseando-se no nome da nova campanha carregada.
 ---
 
 ## PARTE 2: REQUISITOS FUNCIONAIS (MECÂNICAS, LÓGICA DE USUÁRIO E UI)

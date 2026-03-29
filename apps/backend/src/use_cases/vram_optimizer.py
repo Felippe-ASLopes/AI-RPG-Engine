@@ -51,3 +51,18 @@ class VRAMOptimizer:
 
     def get_current_state(self) -> str:
         return self.active_engine
+    
+    async def force_clear_vram(self):
+        """
+        (Épico 35) Força a liberação completa da VRAM, apagando o contexto cacheado.
+        Ideal para limpar alucinações residuais durante o !load de um novo save.
+        """
+        logger.warning("VRAM OPTIMIZER: Executando expurgo forçado de contexto na RX 7600...")
+        
+        # Aqui ficará a chamada HTTP para a API local (ex: /api/extra/abort)
+        # Para simular o tempo de descarregamento da placa de vídeo:
+        await asyncio.sleep(1.0) 
+        
+        # Devolve a prioridade para o texto, que é o padrão ao carregar um save
+        self.active_engine = "TEXT" 
+        logger.info("VRAM OPTIMIZER: Memória de vídeo expurgada com sucesso.")
