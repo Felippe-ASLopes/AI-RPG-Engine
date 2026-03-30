@@ -14,7 +14,7 @@ class SaveManager:
     def execute_save(self, command: str, current_state: SaveState) -> str:
         """
         Interpreta o comando do terminal e aciona a persistência.
-        Ex: '!save final_boss' ou '!save --overwrite final_boss'
+        Ex: '/save final_boss' ou '/save -o final_boss'
         """
         parts = command.strip().split()
         

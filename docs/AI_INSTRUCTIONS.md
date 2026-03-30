@@ -67,7 +67,7 @@ O backend em Python DEVE respeitar rigorosamente as seguintes camadas:
 
 ## 6. REGRAS DE IMPLEMENTAÇÃO DE FUNCIONALIDADES
 - **Arquivos de Save:** Devem ser estritamente manipulados em formato `.json` ou `.sqlite` locais para garantir integridade.
-- **Comandos de Terminal:** A lógica de parsing deve isolar blocos de Ação (`>`), Fala (`"`) e Sistema (`!`, `#`) antes de enviar para a LLM.
+- **Comandos de Terminal:** A lógica de parsing deve isolar blocos de Ação (`>`), Fala (`"`) e Sistema (`$`, `#`) antes de enviar para a LLM.
 - **Injeção de RAG e Metadados:** Ao encontrar uma tag de entidade (`@`), o código deve buscar o contexto no banco antes da inferência da LLM e embutir os dados silenciosamente no prompt.
 - **Resiliência e Assincronicidade:** Funções que chamam APIs de geração (texto ou imagem) devem ser assíncronas (`async/await`) para não travar o loop de eventos do FastAPI ou a UI do Tauri.
 
@@ -81,3 +81,9 @@ Antes de iniciar a escrita de qualquer código, identifique a qual camada da arq
   - `backend/tests/integrated/`: Contém testes de integração e orquestração. Verifica se Casos de Uso (Use Cases) estão acionando corretamente os Adaptadores (Adapters) e serviços externos (VRAM, Bancos de Dados).
 - **Cobertura Mínima:** Os testes devem cobrir fluxos de sucesso e fluxos de exceção (ex: arquivo não encontrado, limite excedido).
 - **Assincronicidade:** Testes de rotinas assíncronas devem utilizar o decorador `@pytest.mark.asyncio`.
+
+## 9. VARIÁVEIS DE AMBIENTE E CONFIGURAÇÃO (.ENV)
+- **Proibição de Hard-Code:** É estritamente proibido utilizar valores fixos (hard-coded) no código para URLs de API, portas, caminhos de diretórios (paths) ou limites de hardware.
+- **Centralização:** Todas as variáveis do `.env` devem ser tipadas e mapeadas na classe `AppConfig` localizada em `src/infrastructure/config.py`. As demais camadas devem importar esta classe para ler configurações.
+- **Resolução de Caminhos (Paths):** Evite utilizar retrocessos como `../../` em strings de diretório. Configure os caminhos de forma limpa no `.env` (ex: `data/chromadb`) e utilize a constante `AppConfig.PROJECT_ROOT` para resolver o caminho absoluto dinamicamente.
+- **Pureza do Domínio:** A camada de `domain/` NUNCA deve importar `AppConfig` ou `os.getenv`. Se uma entidade de domínio precisar de um valor padrão vindo do `.env` (como as flags de Gore/NSFW), esse valor deve ser injetado pelo Caso de Uso (Use Case) durante a sua instanciação.

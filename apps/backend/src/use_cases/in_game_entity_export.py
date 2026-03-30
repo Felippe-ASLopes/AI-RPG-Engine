@@ -9,7 +9,7 @@ logger = get_logger("ENTITY_EXPORT")
 
 class InGameEntityExportUseCase:
     """
-    Implementa o Épico 36: Extração de Presets em tempo real (!save --entity @tag).
+    Implementa o Épico 36: Extração de Presets em tempo real (/save -e @tag).
     Transforma entidades orgânicas geradas na narrativa em arquivos reutilizáveis.
     """
     def __init__(self, rag_adapter, llm_adapter, preset_repository):

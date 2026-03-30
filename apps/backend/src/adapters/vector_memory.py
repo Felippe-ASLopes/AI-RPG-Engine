@@ -3,6 +3,7 @@ import uuid
 from chromadb.utils import embedding_functions
 from pathlib import Path
 from src.infrastructure.logger import get_logger
+from src.infrastructure.config import AppConfig
 
 logger = get_logger("VECTOR_MEMORY")
 
@@ -11,9 +12,8 @@ class VectorMemoryAdapter:
     Gerencia a Memória de Longo Prazo do RPG utilizando ChromaDB (Épico 4).
     Armazena e recupera vetores de contexto para criar a sensação de um mundo vivo.
     """
-    def __init__(self, db_path: str = "../../../../data/chromadb"):
-        current_dir = Path(__file__).parent
-        self.chroma_path = (current_dir / db_path).resolve()
+    def __init__(self, db_path: Path = AppConfig.CHROMA_DB_PATH):
+        self.chroma_path = db_path
         
         logger.info(f"Inicializando Banco Vetorial (RAG) em: {self.chroma_path}")
         self._ensure_directory()
@@ -136,4 +136,25 @@ class VectorMemoryAdapter:
             
         except Exception as e:
             logger.error(f"Erro ao guardar memória no ChromaDB: {str(e)}")
+            return False
+        
+    def delete_campaign_collection(self, campaign_name: str) -> bool:
+        """
+        (Épico 38) Apaga permanentemente todas as memórias vetoriais de uma campanha.
+        """
+        safe_name = "".join(c if c.isalnum() else "_" for c in campaign_name).strip("_").lower()
+        if not safe_name:
+            safe_name = "default_campaign"
+
+        collection_name = f"campaign_{safe_name}"
+
+        try:
+            self.client.delete_collection(name=collection_name)
+            logger.info(f"RAG: Banco vetorial '{collection_name}' deletado com sucesso.")
+            return True
+        except ValueError:
+            logger.warning(f"RAG: A collection '{collection_name}' não existia para ser deletada.")
+            return False
+        except Exception as e:
+            logger.error(f"RAG: Erro ao deletar collection '{collection_name}': {str(e)}")
             return False

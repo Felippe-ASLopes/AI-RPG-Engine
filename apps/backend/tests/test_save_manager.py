@@ -7,7 +7,7 @@ from src.use_cases.save_manager import SaveManager
 
 @pytest.fixture
 def temp_save_dir(tmp_path):
-    return str(tmp_path)
+    return tmp_path
 
 def test_save_campaign_success(temp_save_dir):
     repo = JsonSaveRepository(base_data_path=temp_save_dir)

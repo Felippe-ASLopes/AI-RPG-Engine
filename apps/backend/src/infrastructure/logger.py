@@ -1,9 +1,11 @@
 import logging
 import os
 from datetime import datetime
+from dotenv import load_dotenv
 
 # O arquivo de log único definido no Épico 18 e 19
-LOG_FILE_PATH = "session.log"
+load_dotenv()
+LOG_FILE_PATH = os.getenv("LOG_FILE_PATH", "session.log")
 
 class Formatter(logging.Formatter):
     """

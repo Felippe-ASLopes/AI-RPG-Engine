@@ -8,11 +8,12 @@ class CommandDispatcherUseCase:
     Épico 37: Roteador Central de Comandos.
     Intercepta strings iniciadas por '/' e roteia para os módulos corretos utilizando Pattern Matching.
     """
-    def __init__(self, save_manager, load_manager, entity_export, direct_injection):
+    def __init__(self, save_manager, load_manager, entity_export, direct_injection, delete_manager):
         self.save_manager = save_manager
         self.load_manager = load_manager
         self.entity_export = entity_export
         self.direct_injection = direct_injection
+        self.delete_manager = delete_manager
 
     async def dispatch(self, raw_input: str, current_state) -> CommandResponse:
         text = raw_input.strip()
@@ -34,15 +35,24 @@ class CommandDispatcherUseCase:
                 return CommandResponse(is_command=True, message=msg, new_state=new_state)
 
             case "/save":
-                # Verifica se é uma extração de entidade (/save -e ou /save -entity)
-                if len(parts) > 1 and parts[1] in ["-e", "-entity"]:
-                    msg = await self.entity_export.execute_extraction(text)
-                    return CommandResponse(is_command=True, message=msg)
+                # Verifica se há flags adicionais no comando /save
+                if len(parts) > 1:
+                    flag = parts[1].lower()
+                    
+                    # Extração de Entidade
+                    if flag in ["-e", "-entity"]:
+                        msg = await self.entity_export.execute_extraction(text)
+                        return CommandResponse(is_command=True, message=msg)
+                    
+                    # Módulo de Exclusão (Saves e Presets)
+                    elif flag in ["-delete", "-d", "-deletepreset", "-dp"]:
+                        msg = self.delete_manager.execute_delete(text, current_state)
+                        return CommandResponse(is_command=True, message=msg)
                 
-                # Senão, é um save de progresso normal
-                else:
-                    msg = self.save_manager.execute_save(text, current_state)
-                    return CommandResponse(is_command=True, message=msg)
+                # Se não bateu com nenhuma das flags acima (ou se foi só "/save meujogo"), 
+                # roda o save de progresso normal
+                msg = self.save_manager.execute_save(text, current_state)
+                return CommandResponse(is_command=True, message=msg)
 
             case "/insert":
                 msg = self.direct_injection.execute_injection(text)

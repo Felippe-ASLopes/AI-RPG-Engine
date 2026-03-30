@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 from src.domain.save_state import SaveState
 from src.infrastructure.logger import get_logger
+from src.infrastructure.config import AppConfig
 
 logger = get_logger("SAVE_REPO")
 
@@ -9,9 +10,8 @@ class JsonSaveRepository:
     """
     Adaptador para serializar o contexto em arquivos JSON locais.
     """
-    def __init__(self, base_data_path: str = "../../../../data/sqlite"):
-        current_dir = Path(__file__).parent
-        self.save_path = (current_dir / base_data_path).resolve()
+    def __init__(self, base_data_path: Path = AppConfig.SQLITE_DB_PATH):
+        self.save_path = base_data_path
         
         logger.info(f"Repositório de Saves inicializado em: {self.save_path}")
         self._ensure_directory()
@@ -55,3 +55,21 @@ class JsonSaveRepository:
         except Exception as e:
             logger.error(f"Erro ao analisar o ficheiro de save {filename}: {str(e)}")
             return None
+        
+    def delete(self, filename: str) -> bool:
+        """
+        (Épico 38) Remove o arquivo físico do save do HD.
+        """
+        filepath = self.save_path / f"{filename}.json"
+        
+        if filepath.exists():
+            try:
+                filepath.unlink()
+                logger.info(f"Arquivo de save '{filename}.json' deletado do disco.")
+                return True
+            except Exception as e:
+                logger.error(f"Erro ao deletar arquivo de save {filename}: {str(e)}")
+                return False
+                
+        logger.warning(f"Tentativa de exclusão falhou: O save '{filename}.json' não existe.")
+        return False

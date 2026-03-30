@@ -12,7 +12,6 @@ def temp_load_dir(tmp_path):
     dir_path = tmp_path / "saves"
     dir_path.mkdir()
     
-    # Criar um ficheiro de save "mock" para testar o load
     save_file = dir_path / "aventura_teste.json"
     mock_data = {
         "campaign_name": "Reino de Valéria",
@@ -22,7 +21,7 @@ def temp_load_dir(tmp_path):
     with open(save_file, "w", encoding="utf-8") as f:
         json.dump(mock_data, f)
         
-    return str(dir_path)
+    return dir_path
 
 @pytest.mark.asyncio
 async def test_load_campaign_success(temp_load_dir):

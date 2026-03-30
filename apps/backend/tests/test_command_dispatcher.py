@@ -11,7 +11,8 @@ async def test_dispatch_save_command():
         save_manager=mock_save, 
         load_manager=AsyncMock(), 
         entity_export=AsyncMock(),
-        direct_injection=MagicMock()  # <- Correção: 4º argumento adicionado
+        direct_injection=MagicMock(),  # <- Correção: 4º argumento adicionado
+        delete_manager=MagicMock()
     )
     
     response = await dispatcher.dispatch("/save aventura1", current_state=MagicMock())
@@ -29,7 +30,8 @@ async def test_dispatch_entity_export_command():
         save_manager=MagicMock(), 
         load_manager=AsyncMock(), 
         entity_export=mock_export,
-        direct_injection=MagicMock()  # <- Correção: 4º argumento adicionado
+        direct_injection=MagicMock(),  # <- Correção: 4º argumento adicionado
+        delete_manager=MagicMock()
     )
     
     # O dispatcher deve saber que /save -e vai para o export, não para o save normal
@@ -48,7 +50,8 @@ async def test_dispatch_direct_injection_command():
         save_manager=MagicMock(),
         load_manager=AsyncMock(),
         entity_export=AsyncMock(),
-        direct_injection=mock_injection  # <- Passando o mock correto para testar
+        direct_injection=mock_injection,  # <- Passando o mock correto para testar
+        delete_manager=MagicMock()
     )
     
     response = await dispatcher.dispatch("/insert O rei é um traidor.", current_state=MagicMock())
@@ -58,8 +61,7 @@ async def test_dispatch_direct_injection_command():
 
 @pytest.mark.asyncio
 async def test_dispatch_invalid_command():
-    # Correção: Adicionado o 4º argumento MagicMock()
-    dispatcher = CommandDispatcherUseCase(MagicMock(), AsyncMock(), AsyncMock(), MagicMock())
+    dispatcher = CommandDispatcherUseCase(MagicMock(), AsyncMock(), AsyncMock(), MagicMock(), MagicMock())
     
     response = await dispatcher.dispatch("/comando_inexistente", current_state=MagicMock())
     
@@ -68,11 +70,49 @@ async def test_dispatch_invalid_command():
 
 @pytest.mark.asyncio
 async def test_dispatch_not_a_command():
-    # Correção: Adicionado o 4º argumento MagicMock()
-    dispatcher = CommandDispatcherUseCase(MagicMock(), AsyncMock(), AsyncMock(), MagicMock())
+    dispatcher = CommandDispatcherUseCase(MagicMock(), AsyncMock(), AsyncMock(), MagicMock(), MagicMock())
     
     # Input normal de narrativa
     response = await dispatcher.dispatch("> Eu ataco o orc.", current_state=MagicMock())
     
     # Deve avisar o controlador que isto NÃO é um comando e deve seguir para a IA
     assert response.is_command is False
+
+@pytest.mark.asyncio
+async def test_dispatch_delete_save_command():
+    mock_delete_manager = MagicMock()
+    mock_delete_manager.execute_delete.return_value = "[SISTEMA] Save deletado."
+    
+    dispatcher = CommandDispatcherUseCase(
+        save_manager=MagicMock(), 
+        load_manager=AsyncMock(), 
+        entity_export=AsyncMock(),
+        direct_injection=MagicMock(),
+        delete_manager=mock_delete_manager  # <-- Novo mock
+    )
+    
+    current_state = MagicMock()
+    response = await dispatcher.dispatch("/save -d meu_save", current_state)
+    
+    assert response.is_command is True
+    mock_delete_manager.execute_delete.assert_called_once_with("/save -d meu_save", current_state)
+    assert "Save deletado" in response.message
+
+@pytest.mark.asyncio
+async def test_dispatch_delete_preset_command():
+    mock_delete_manager = MagicMock()
+    mock_delete_manager.execute_delete.return_value = "[SISTEMA] Preset deletado."
+    
+    dispatcher = CommandDispatcherUseCase(
+        save_manager=MagicMock(), 
+        load_manager=AsyncMock(), 
+        entity_export=AsyncMock(),
+        direct_injection=MagicMock(),
+        delete_manager=mock_delete_manager  # <-- Novo mock
+    )
+    
+    response = await dispatcher.dispatch("/save -deletepreset @ogro", current_state=MagicMock())
+    
+    assert response.is_command is True
+    mock_delete_manager.execute_delete.assert_called_once()
+    assert "Preset deletado" in response.message

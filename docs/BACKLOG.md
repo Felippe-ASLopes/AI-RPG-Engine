@@ -19,7 +19,7 @@
     * Requisito Funcional 18.3 (Rastreabilidade de Contexto): O log deve indicar a origem do dado sem expor o conteúdo sensível.
 * ÉPICO 19: GESTÃO DE CICLO DE VIDA DOS LOGS
     * História de Usuário: Como usuário, quero logs leves que não ocupem espaço desnecessário e que sejam reiniciados a cada nova aventura.
-    * Requisito Funcional 19.1 (Limpeza Automática): O arquivo session.log deve ser deletado e recriado em cada inicialização do app (main.py) e em cada execução de !load [save].
+    * Requisito Funcional 19.1 (Limpeza Automática): O arquivo session.log deve ser deletado e recriado em cada inicialização do app (main.py) e em cada execução de /load [save].
     * Requisito Funcional 19.2 (Exibição Real-time): Implementar uma flag --debug ou uma janela de console paralela que faça o "tail" (leitura em tempo real) do arquivo de log conforme ele é escrito.
     * Requisito Funcional 19.3 (Otimização de Escrita): Utilizar escrita assíncrona ou buffer de log para que o registro no SSD não atrase a geração da IA (latência zero para o jogador).
 
@@ -56,8 +56,13 @@
 * ÉPICO 35: INTEGRAÇÃO DE HOT-SWAP E LIMPEZA PROFUNDA DE CONTEXTO (PREVENÇÃO DE ALUCINAÇÃO)
     * História de Usuário: Como jogador, quero que ao carregar um save diferente, a IA esqueça completamente a sessão anterior, limpando a VRAM e os ponteiros do banco vetorial, para que histórias de campanhas distintas não se misturem.
     * Requisito Funcional 35.1 (Orquestração de Descarregamento): O `LoadManager` deve atuar como orquestrador central, injetando as dependências do `VRAMOptimizer` e `VectorMemoryAdapter`.
-    * Requisito Funcional 35.2 (Flush de VRAM): Ao acionar o `!load`, o sistema deve notificar o `VRAMOptimizer` para limpar os caches do motor de texto ativo.
+    * Requisito Funcional 35.2 (Flush de VRAM): Ao acionar o `/load`, o sistema deve notificar o `VRAMOptimizer` para limpar os caches do motor de texto ativo.
     * Requisito Funcional 35.3 (Isolamento de RAG): O sistema deve sinalizar ao adaptador do ChromaDB para trocar a "collection" ativa ou limpar o cache de contexto baseando-se no nome da nova campanha carregada.
+* ÉPICO 38: GESTÃO DE EXCLUSÃO DE DADOS (DELETE SAVE & PRESETS)
+    * História de Usuário: Como jogador, quero poder excluir campanhas antigas e presets não utilizados para liberar espaço no meu HD e manter minha interface organizada, garantindo que nenhum dado residual (como memórias no RAG) seja esquecido.
+    * Requisito Funcional 38.1 (Comando de Exclusão de Save): Implementar o comando `/save -delete [nome_do_save]` ou `/save -d [nome_do_save]`. O sistema deve ler o arquivo de save para descobrir o nome da campanha, deletar a *collection* correspondente no ChromaDB e, por fim, excluir o arquivo `.json` ou `.sqlite` local.
+    * Requisito Funcional 38.2 (Comando de Exclusão de Preset): Implementar o comando separado `/save -deletepreset [nome_da_entidade]` ou `/save -dp [nome_da_entidade]`. O sistema deve buscar e excluir exclusivamente o arquivo da entidade na pasta `/Global_Library`.
+    * Requisito Funcional 38.3 (Segurança e Orquestração): A exclusão de um save não deve apagar os presets exportados. Além disso, o sistema deve impedir a exclusão de um save caso a campanha vinculada a ele seja a que está atualmente carregada na sessão ativa (proteção de contexto).
 ---
 
 ## PARTE 2: REQUISITOS FUNCIONAIS (MECÂNICAS, LÓGICA DE USUÁRIO E UI)

@@ -55,7 +55,7 @@ class VRAMOptimizer:
     async def force_clear_vram(self):
         """
         (Épico 35) Força a liberação completa da VRAM, apagando o contexto cacheado.
-        Ideal para limpar alucinações residuais durante o !load de um novo save.
+        Ideal para limpar alucinações residuais durante o /load de um novo save.
         """
         logger.warning("VRAM OPTIMIZER: Executando expurgo forçado de contexto na RX 7600...")
         

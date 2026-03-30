@@ -2,6 +2,7 @@ import os
 import json
 from pathlib import Path
 from src.infrastructure.logger import get_logger
+from src.infrastructure.config import AppConfig
 
 logger = get_logger("ASSET_BRIDGE")
 
@@ -10,11 +11,8 @@ class AssetBridgeAdapter:
     Escaneia os diretórios locais de Assets e extrai metadados (JSON) 
     para injeção dinâmica no prompt da LLM (Épico 3).
     """
-    def __init__(self, base_data_path: str = "../../../../data/Assets"):
-        # Resolve o caminho absoluto baseado na localização deste script
-        current_dir = Path(__file__).parent
-        self.assets_path = (current_dir / base_data_path).resolve()
-        
+    def __init__(self, base_data_path: Path = AppConfig.ASSETS_PATH):
+        self.assets_path = base_data_path
         self.scenery_path = self.assets_path / "Scenery"
         self.characters_path = self.assets_path / "Characters"
         

@@ -3,6 +3,7 @@ from src.domain.campaign_setup import CampaignSetup
 from src.domain.llm import LLMGenerationRequest, ChatMessage
 from src.domain.prompts import SystemPrompts, UserPrompts
 from src.infrastructure.logger import get_logger
+from src.infrastructure.config import AppConfig
 
 logger = get_logger("CAMPAIGN_WIZARD")
 
@@ -21,6 +22,17 @@ class CampaignWizardUseCase:
         apenas valida. Se faltarem dados, pede para a LLM completar.
         """
         logger.info("Analisando dados de setup da campanha...")
+
+        # INJEÇÃO DAS VARIÁVEIS DE AMBIENTE (.ENV) ANTES DA VALIDAÇÃO DO DOMÍNIO
+        # Se o jogador não enviou preferências de restrição de conteúdo pela interface, 
+        # aplicamos os valores padrão definidos no arquivo .env
+        if "content_gating" not in partial_data:
+            logger.debug("Preferências de conteúdo não fornecidas. Aplicando padrões do .env.")
+            partial_data["content_gating"] = {
+                "allow_nsfw": AppConfig.DEFAULT_ALLOW_NSFW,
+                "allow_gore": AppConfig.DEFAULT_ALLOW_GORE,
+                "banned_topics": []
+            }
         
         try:
             # Tenta instanciar a entidade final. Se não faltar nenhum campo 

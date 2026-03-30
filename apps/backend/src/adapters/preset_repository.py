@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 from src.domain.campaign_setup import CampaignSetup
 from src.infrastructure.logger import get_logger
+from src.infrastructure.config import AppConfig
 
 logger = get_logger("PRESET_REPO")
 
@@ -9,9 +10,8 @@ class JsonPresetRepository:
     """
     Adaptador para serializar presets na biblioteca global e templates de campanha.
     """
-    def __init__(self, base_data_path: str = "../../../../data"):
-        current_dir = Path(__file__).parent
-        self.data_path = (current_dir / base_data_path).resolve()
+    def __init__(self, base_url: str = AppConfig.KOBOLD_API_URL):
+        self.base_url = base_url
         
         # Onde guardamos os esqueletos iniciais das campanhas
         self.templates_path = self.data_path / "sqlite" / "templates"
@@ -64,3 +64,21 @@ class JsonPresetRepository:
         except Exception as e:
             logger.error(f"Erro ao ler preset de entidade {safe_name}: {str(e)}")
             return None
+        
+    def delete_entity_preset(self, safe_name: str) -> bool:
+        """
+        (Épico 38) Remove um NPC guardado na Biblioteca Global.
+        """
+        filepath = self.npc_presets_path / f"{safe_name}.json"
+        
+        if filepath.exists():
+            try:
+                filepath.unlink()
+                logger.info(f"Preset de entidade '{safe_name}.json' deletado da Global Library.")
+                return True
+            except Exception as e:
+                logger.error(f"Erro ao deletar preset de entidade {safe_name}: {str(e)}")
+                return False
+                
+        logger.warning(f"Tentativa de exclusão falhou: O preset '{safe_name}.json' não existe.")
+        return False
