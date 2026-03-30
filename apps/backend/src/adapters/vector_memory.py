@@ -1,4 +1,5 @@
 import chromadb
+import uuid
 from chromadb.utils import embedding_functions
 from pathlib import Path
 from src.infrastructure.logger import get_logger
@@ -86,3 +87,53 @@ class VectorMemoryAdapter:
             logger.info(f"RAG: Banco vetorial isolado. Collection ativa: '{collection_name}'.")
         except Exception as e:
             logger.error(f"RAG: Erro ao isolar memórias para {campaign_name}: {str(e)}")
+
+    def recall_exact_match(self, keyword_query: str, n_results: int = 3) -> list:
+        """
+        Épico 10: Procura por 'exact match' ou palavra-chave (Filtro 'where_document' do ChromaDB),
+        ignorando a similaridade vetorial para garantir precisão absoluta.
+        """
+        try:
+            # O operador $contains procura a substring exata dentro da memória guardada
+            results = self.collection.query(
+                query_texts=[keyword_query],
+                n_results=n_results,
+                where_document={"$contains": keyword_query}
+            )
+            
+            documents = results.get("documents", [[]])[0]
+            
+            if documents:
+                logger.info(f"RAG Exact Match: {len(documents)} memórias recuperadas para '{keyword_query}'.")
+            else:
+                logger.debug(f"RAG Exact Match: Nenhuma ocorrência exata de '{keyword_query}' encontrada.")
+                
+            return documents
+            
+        except Exception as e:
+            logger.error(f"Erro ao forçar recuperação no RAG: {str(e)}")
+            return []
+
+    def save_memory(self, memory_text: str, metadata: dict = None) -> bool:
+        """
+        Épico 16: Guarda um facto diretamente no banco vetorial da campanha atual.
+        """
+        try:
+            # O ChromaDB exige IDs únicos para cada documento
+            unique_id = uuid.uuid4().hex
+            
+            # Se não houver metadados, criamos um dicionário vazio ou uma tag de injeção manual
+            meta = metadata if metadata else {"source": "manual_injection"}
+            
+            self.collection.add(
+                documents=[memory_text],
+                metadatas=[meta],
+                ids=[unique_id]
+            )
+            
+            logger.info(f"Nova memória guardada no RAG (ID: {unique_id}): '{memory_text[:30]}...'")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Erro ao guardar memória no ChromaDB: {str(e)}")
+            return False

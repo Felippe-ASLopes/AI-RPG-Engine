@@ -46,12 +46,12 @@
     * Tarefa 4.2: Ajustar o "k-nearest neighbors" (k-NN) para recuperar apenas as 3 memórias mais relevantes por turno.
 * ÉPICO 12: GESTÃO DE SAVES MANUAIS (SNAPSHOTS)
     * História de Usuário: Como jogador, quero salvar momentos específicos da minha jornada em arquivos permanentes para poder explorá-los novamente depois ou evitar perdas por queda de energia.
-    * Requisito Funcional 12.1 (Comando de Save): Implementar comandos de console: !save [nome] e !save --overwrite [nome].
+    * Requisito Funcional 12.1 (Comando de Save): Implementar comandos de console: `/save [nome]`, com suporte à flag de substituição `/save -overwrite [nome]` ou sua forma abreviada `/save -o [nome]`.
     * Requisito Funcional 12.2 (Serialização de Contexto): O save deve conter o "Buffer de Contexto" completo (Texto + Metadados de @tags ativos + Logs de Feedback).
     * Requisito Funcional 12.3 (Persistência em Disco): O salvamento deve ser obrigatoriamente em arquivos .json ou .sqlite locais para garantir integridade pós-desligamento.
 * ÉPICO 13: SISTEMA DE CARREGAMENTO E TROCA DE TIMELINE (LOAD)
     * História de Usuário: Como jogador, quero alternar entre diferentes arquivos de save durante a sessão para testar diferentes decisões.
-    * Requisito Funcional 13.1 (Hot-Swap): Implementar o comando !load [nome]. Ao ser executado, o sistema limpa a VRAM do contexto atual e carrega o novo histórico.
+    * Requisito Funcional 13.1 (Hot-Swap): Implementar o comando `/load [nome]`. Ao ser executado, o sistema limpa a VRAM do contexto atual e carrega o novo histórico.
     * Requisito Funcional 13.2 (Verificação de Integridade): O sistema deve validar se os modelos de IA (LLM/Diffusion) necessários para aquele save estão disponíveis antes de carregar.
 * ÉPICO 35: INTEGRAÇÃO DE HOT-SWAP E LIMPEZA PROFUNDA DE CONTEXTO (PREVENÇÃO DE ALUCINAÇÃO)
     * História de Usuário: Como jogador, quero que ao carregar um save diferente, a IA esqueça completamente a sessão anterior, limpando a VRAM e os ponteiros do banco vetorial, para que histórias de campanhas distintas não se misturem.
@@ -86,12 +86,31 @@
     * Requisito Funcional 25.2 (Blacklist de Conceitos): Campo de texto para "Temas Banidos". Qualquer menção a esses temas deve disparar um aviso no log e forçar uma regeneração automática (/regen) silenciosa.
     * Requisito Funcional 25.3 (Hard-Prompting de Restrição): As restrições e temas desativados devem ser injetados com prioridade máxima (Negative Prompts/System Constraints) no início de cada chamada à LLM e ao gerador de imagens.
 
-### FASE 5: Processamento de Input e Lógica Core (Depende do Setup e IA)
+### FASE 5: Processamento de Input e Lógica Core (Depende do Setup e IA) [CONCLUÍDO]
 * ÉPICO 8: PROCESSADOR DE INPUT MULTIMODAL (BLOCOS)
     * História de Usuário: Como jogador, quero separar minhas falas, ações e comandos de sistema em blocos distintos para que a IA processe cada um com a "intenção" correta.
-    * Requisito Funcional 8.1 (Identificadores de Bloco): Implementar suporte a prefixos ou caracteres especiais (> Ação, " Fala, ! Trapaça, # Feedback).
-    * Requisito Funcional 8.2 (Preservação de Ordem): O motor de prompt deve concatenar os blocos de 'Falas' e 'Ações' exatamente na ordem em que foram digitados pelo usuário.
-    * Requisito Funcional 8.3 (Independência de Blocos de Sistema): Blocos de ! (Trapaça) e # (Feedback) devem ser extraídos do texto narrativo e injetados diretamente no "System Prompt".
+    * Requisito Funcional 8.1 (Identificadores de Bloco): Implementar suporte a prefixos especiais: `>` (Ação), `"` (Fala), `$` (Trapaça/Override) e `#` (Feedback).
+    * Requisito Funcional 8.2 (Preservação de Ordem): O motor de prompt deve concatenar os blocos de 'Falas' e 'Ações' na ordem exata em que foram digitados pelo usuário, compondo o bloco narrativo.
+    * Requisito Funcional 8.3 (Independência de Blocos de Sistema): Blocos de `$` (Trapaça) e `#` (Feedback) devem ser extraídos da narrativa e injetados separadamente no "System Prompt" ou instruções de contexto adicionais.
+* ÉPICO 37: ROTEADOR CENTRAL DE COMANDOS (COMMAND DISPATCHER)
+    * História de Usuário: Como sistema, preciso de um ponto único (Front Controller) que intercepte os comandos do jogador (iniciados por `/`) e os direcione para os módulos corretos, evitando verificações redundantes no fluxo principal e mantendo o código escalável.
+    * Requisito Funcional 37.1 (Interceptação e Parse): O sistema deve verificar se o input bruto começa com `/`. Se sim, deve quebrar os argumentos e identificar o Caso de Uso alvo.
+    * Requisito Funcional 37.2 (Delegação Dinâmica): Direcionar `/load` para o `LoadManager`, `/save -e` para o `InGameEntityExport` e `/save` padrão para o `SaveManager`.
+    * Requisito Funcional 37.3 (Padronização de Retorno): Devolver um objeto padronizado informando se o comando foi tratado, qual a mensagem de feedback e se o estado do jogo foi alterado (útil para o `/load`).
+    para analise futura: 'Agora, quando formos criar a rota principal de chat no FastAPI, o código do controlador será maravilhosamente simples:' '# Pseudo-código do nosso futuro endpoint de chat
+@router.post("/chat")
+async def process_turn(request: ChatRequest):
+    
+    # 1. Tenta rotear como comando de sistema
+    cmd_response = await command_dispatcher.dispatch(request.text, current_state)
+    
+    if cmd_response.is_command:
+        # Se for comando (ex: /save), devolve a mensagem e NÃO chama a IA
+        return {"response": cmd_response.message, "state": cmd_response.new_state}
+        
+    # 2. Se não for comando, segue o fluxo normal do jogo (Fase 5 -> IA)
+    parsed_input = input_processor.parse_raw_input(request.text)
+    # ... chama o RAG, chama a LLM ...'
 * ÉPICO 9: SISTEMA DE TAGGING DE ENTIDADES (@MAPPING)
     * História de Usuário: Como jogador, quero marcar entidades (NPCs, Objetos, Locais) no meu texto para que o sistema force a recuperação de dados específicos do RAG ou do Atlas Local.
     * Requisito Funcional 9.1 (Menção Direta): Uso do caractere @ para disparar uma busca imediata no banco de dados.
@@ -99,21 +118,18 @@
     * Requisito Funcional 9.3 (Integridade de Sequência): Garantir que a IA receba o contexto na ordem correta da frase no buffer de memória.
 * ÉPICO 10: ACESSO MANUAL AO RAG (THE FORCED RECALL)
     * História de Usuário: Como jogador, quero poder forçar a IA a lembrar de algo específico sem precisar esperar que ela decida pesquisar.
-    * Requisito Funcional 10.1 (Comando de Memória): Implementar o caractere/comando ? ou REMEMBER: para busca profunda no RAG.
+    * Requisito Funcional 10.1 (Comando de Memória): Implementar o caractere/comando `*` para busca profunda no RAG (ex: `* o acordo com o rei`).
     * Tarefa 10.2: Criar uma função que ignore a "similaridade semântica" padrão e faça uma busca por "exact match" no banco vetorial.
 * ÉPICO 16: INJEÇÃO DIRETA DE CONTEXTO E RAG (THE OVERRIDE)
     * História de Usuário: Como administrador do jogo, quero alterar as propriedades de um objeto ou personagem instantaneamente via chat.
-    * Requisito Funcional 16.1 (Sintaxe de Injeção): Implementar o prefixo +: como comando de escrita direta no banco de dados/RAG.
+    * Requisito Funcional 16.1 (Sintaxe de Injeção): Implementar o prefixo `/insert` como comando de escrita direta no banco de dados/RAG.
     * Requisito Funcional 16.2 (Atualização de Memória): Ao receber o comando, sobrescrever/adicionar os novos parâmetros e limpar o cache de contexto da GPU.
     * Requisito Funcional 16.3 (Acesso Direto ao RAG): O comando +: @entidade sem parâmetros adicionais deve abrir um log rápido do que o RAG sabe sobre aquela entidade.
-* ÉPICO 33: SISTEMA DE PONTOS DE AÇÃO (TOKEN BUDGET)
-    * História de Usuário: Como jogador, quero saber o quanto meu input está exigindo do computador, para que eu possa planejar minhas ações sem causar lentidão ou erro de memória.
-    * Requisito Funcional 33.1 (Cálculo de Peso de Input): Implementar um algoritmo de contagem de tokens em tempo real (Tokenizer) que atribui pesos diferentes.
-    * Requisito Funcional 33.2 (HUD de Pontos de Ação): Exibir uma barra visual de "Pontos de Ação". Se chegar a zero, o botão "Enviar" deve ser bloqueado.
-    * Requisito Funcional 33.3 (Limite de Segurança de Hardware): No setup da campanha, sugerir um limite máximo de tokens baseado nos 8GB de VRAM e impedir o aumento acima do limite físico.
-* ÉPICO 34: OTIMIZAÇÃO POR MARCAÇÃO (TOKEN EFFICIENCY)
-    * História de Usuário: Como usuário avançado, quero ser recompensado por usar as ferramentas do sistema (como @tags), gastando menos "pontos" do que se eu escrevesse tudo manualmente.
-    * Requisito Funcional 34.1 (Desconto Semântico): Configurar o Tokenizer para identificar que tags ocupam menos "espaço mental" e refletir isso na barra de Pontos.
+* ÉPICO 33: LIMITAÇÃO DE INPUT E CONFIGURAÇÕES DE HARDWARE (.ENV)
+    * História de Usuário: Como administrador do sistema, quero que os limites de hardware (como VRAM total e limite de caracteres por turno) sejam configuráveis externamente, para evitar sobrecarga de memória (OOM - Out of Memory) e prevenir que o jogador envie textos excessivamente longos que quebrem a janela de contexto da IA.
+    * Requisito Funcional 33.1 (Variáveis de Ambiente): O sistema deve ler configurações dinâmicas a partir de um ficheiro `.env` (ex: `TOTAL_VRAM_GB`, `MAX_INPUT_CHARACTERS`). Nenhum destes valores deve estar *hard-coded* no código-fonte.
+    * Requisito Funcional 33.2 (Validação de Input): O Processador de Input deve rejeitar a requisição e lançar um erro estruturado se o texto bruto do jogador ultrapassar o `MAX_INPUT_CHARACTERS` definido.
+    para analise futura: 'Quando formos escrever o Controlador (FastAPI), envolveremos a chamada do parse_raw_input num bloco try/except ValueError:. Se o jogador exagerar, o backend devolve um alerta HTTP 400 amigável com a mensagem de erro da exceção, impedindo o RAG e a IA de gastarem processamento.'
 
 ### FASE 6: Controle Narrativo e Estados (Depende do Input)
 * ÉPICO 7: SISTEMA DE FEEDBACK DO JOGADOR
@@ -127,17 +143,17 @@
     * Requisito Funcional 11.3 (Sobrescrita de Fluxo): Ao enviar um novo input após um <<, deletar a ramificação descartada e iniciar a nova narrativa a partir do ponto restaurado.
 * ÉPICO 17: SISTEMA DE REGENERAÇÃO UNITÁRIA (REGEN)
     * História de Usuário: Como jogador, quero poder pedir que a IA reescreva sua última resposta ou gere uma nova imagem sem alterar meu input.
-    * Requisito Funcional 17.1 (Regerar Texto): Implementar o comando /regen text ou botão de interface que descarta a última resposta da LLM e dispara uma nova inferência com o exato mesmo contexto e input.
-    * Requisito Funcional 17.2 (Regerar Imagem): Implementar o comando /regen img. O sistema deve manter o texto da IA, mas disparar uma nova chamada ao ComfyUI.
+    * Requisito Funcional 17.1 (Regerar Texto): Implementar o comando `/regen -text` (ou `/regen -t`) e botão de interface que descarta a última resposta da LLM e dispara uma nova inferência com o exato mesmo contexto e input.
+    * Requisito Funcional 17.2 (Regerar Imagem): Implementar o comando `/regen -img` (ou `/regen -i`) e botão de interface.  O sistema deve manter o texto da IA, mas disparar uma nova chamada ao ComfyUI.
     * Requisito Funcional 17.3 (Preservação de Input): Diferente do << (Undo), o regen não apaga o input do usuário, apenas substitui o nó de saída no histórico do chat.
 * ÉPICO 32: SISTEMA DE CONSULTA AO MESTRE (ORACLE MODE)
     * História de Usuário: Como jogador, quero tirar dúvidas sobre o cenário ou regras sem avançar o tempo da história ou gerar imagens desnecessárias, para manter a consistência do meu próximo turno.
-    * Requisito Funcional 32.1 (Bloqueio de Contexto Narrativo): Implementar o comando ?mestre [pergunta]. Ao ser acionado, o sistema congela o buffer de chat atual e impede que a resposta da IA seja escrita no arquivo de histórico da campanha.
+    * Requisito Funcional 32.1 (Bloqueio de Contexto Narrativo): Implementar o caractere `?` para tirar dúvidas sem avançar o turno (ex: `? qual é a fraqueza de goblins`). Ao ser acionado, o sistema congela o buffer de chat atual e impede que a resposta da IA seja escrita no arquivo de histórico da campanha.
     * Requisito Funcional 32.2 (Processamento de Baixo Custo): A consulta deve desativar o pipeline de imagem (ComfyUI) e focar apenas na recuperação de dados do RAG ou Atlas Local para responder.
     * Requisito Funcional 32.3 (Preservação de Turno): Após a resposta da IA, a interface deve restaurar exatamente o estado do input do jogador, permitindo que ele continue sua jogada original com a nova informação.
 * ÉPICO 36: EXTRAÇÃO DE PRESETS EM TEMPO REAL (IN-GAME EXPORT) [CONCLUÍDO]
     * História de Usuário: Como mestre/jogador, quero poder salvar personagens, objetos ou locais criados espontaneamente pela IA durante a campanha, para reutilizá-los em outras aventuras no futuro.
-    * Requisito Funcional 36.1 (Comando de Extração): Implementar o comando `!save --entity @tag`. O sistema deve isolar a requisição e não avançar o tempo da narrativa.
+    * Requisito Funcional 36.1 (Comando de Extração): Implementar o comando `/save -entity @tag` ou a sua forma abreviada `/save -e @tag`. O sistema deve isolar a requisição e não avançar o tempo da narrativa.
     * Requisito Funcional 36.2 (Recuperação RAG): O sistema deve consultar o banco vetorial (ChromaDB) e o buffer de contexto em busca de menções e descrições prévias da `@tag`.
     * Requisito Funcional 36.3 (Formatação por IA): A LLM deve receber os fragmentos de memória e formatar a entidade no padrão estruturado `EntityAttributes` (JSON). Se for um objeto/local, a IA deve adaptar criativamente os campos (ex: 'personality' vira 'comportamento mágico/atmosfera').
     * Requisito Funcional 36.4 (Persistência Automática): O resultado final validado deve ser salvo automaticamente na `/Global_Library` pelo `PresetRepository`.

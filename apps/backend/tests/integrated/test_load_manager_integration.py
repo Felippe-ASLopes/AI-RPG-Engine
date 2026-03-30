@@ -31,7 +31,7 @@ async def test_load_manager_clears_vram_and_rag_on_success():
     )
     
     # Executa o comando
-    result_msg, state = await manager.execute_load("!load cyberpunk_save")
+    result_msg, state = await manager.execute_load("/load cyberpunk_save")
     
     # Asserções de Integração: O "Coração" do Épico 35
     
@@ -62,7 +62,7 @@ async def test_load_manager_does_not_clear_if_save_not_found():
     
     manager = LoadManager(mock_repo, mock_vram, mock_rag)
     
-    await manager.execute_load("!load save_fantasma")
+    await manager.execute_load("/load save_fantasma")
     
     # Como o save falhou, a VRAM e o RAG da sessão atual DEVEM ser preservados
     mock_vram.force_clear_vram.assert_not_called()

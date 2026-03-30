@@ -25,8 +25,8 @@ class InGameEntityExportUseCase:
         parts = command.strip().split()
         
         # Validação do formato do comando
-        if len(parts) != 3 or parts[0] != "!save" or parts[1] != "--entity":
-            return "[SISTEMA] Formato inválido. Use: !save --entity @nome_da_entidade"
+        if len(parts) != 3 or parts[0] != "/save" or parts[1] not in ["-entity", "-e"]:
+            return "[SISTEMA] Formato inválido. Use: /save -e @nome_da_entidade"
         
         raw_entity_name = parts[2]
         safe_name = self._sanitize_name(raw_entity_name)

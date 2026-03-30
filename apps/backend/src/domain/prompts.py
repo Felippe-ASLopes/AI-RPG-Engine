@@ -12,6 +12,9 @@ DIRETRIZES:
 
     WIZARD_ASSISTANT = """Você é o assistente de criação de mundos do FELPINHO's RPG ENGINE. Sua tarefa é criar o esqueleto de uma nova aventura completando os dados que o jogador deixar em branco."""
 
+    TAG_INJECTION_HEADER = "\n\n[CONTEXTO DETALHADO DE ENTIDADES NA CENA (LEITURA OBRIGATÓRIA)]\nOs dados abaixo são factos absolutos sobre as entidades com as quais o jogador está a interagir agora:\n"
+
+    FORCED_RECALL_HEADER = "\n\n[MEMÓRIAS RECUPERADAS MANUALMENTE PELO JOGADOR]\nO jogador concentrou-se nestas lembranças específicas. Elas são altamente relevantes para o contexto atual:\n"
 
 class UserPrompts(str, Enum):
     WIZARD_DYNAMIC_TEMPLATE = """

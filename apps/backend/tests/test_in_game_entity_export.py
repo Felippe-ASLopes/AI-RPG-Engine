@@ -35,7 +35,7 @@ async def test_export_entity_from_campaign_success():
     use_case = InGameEntityExportUseCase(mock_rag, mock_llm, mock_preset_repo)
     
     # O usuário digita o comando no chat
-    command = "!save --entity @lamina_do_sol"
+    command = "/save -e @lamina_do_sol"
     result_msg = await use_case.execute_extraction(command)
     
     # Verificações
@@ -51,5 +51,5 @@ async def test_export_entity_from_campaign_success():
 @pytest.mark.asyncio
 async def test_export_entity_invalid_command():
     use_case = InGameEntityExportUseCase(MagicMock(), AsyncMock(), MagicMock())
-    result_msg = await use_case.execute_extraction("!save")
+    result_msg = await use_case.execute_extraction("/save")
     assert "formato inválido" in result_msg.lower()

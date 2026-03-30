@@ -36,7 +36,7 @@ async def test_load_campaign_success(temp_load_dir):
     manager = LoadManager(repo, mock_vram, mock_rag)
     
     # Executa o comando de load (agora assíncrono)
-    result_msg, state = await manager.execute_load("!load aventura_teste")
+    result_msg, state = await manager.execute_load("/load aventura_teste")
     
     assert "com sucesso" in result_msg.lower()
     assert state is not None
@@ -54,7 +54,7 @@ async def test_load_campaign_not_found(temp_load_dir):
     
     manager = LoadManager(repo, mock_vram, mock_rag)
     
-    result_msg, state = await manager.execute_load("!load save_fantasma")
+    result_msg, state = await manager.execute_load("/load save_fantasma")
     
     assert "não foi encontrado" in result_msg.lower()
     assert state is None

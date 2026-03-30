@@ -22,9 +22,9 @@ class LoadManager:
     async def execute_load(self, command: str) -> Tuple[str, Optional[SaveState]]:
         parts = command.strip().split()
         
-        if len(parts) != 2 or parts[0] != "!load":
+        if len(parts) != 2 or parts[0] != "/load":
             logger.debug("Comando de load mal formatado.")
-            return "Erro: Formato inválido. Use !load [nome].", None
+            return "Erro: Formato inválido. Use /load [nome].", None
         
         filename = parts[1]
         

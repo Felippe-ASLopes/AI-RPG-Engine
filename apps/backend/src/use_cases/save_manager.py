@@ -18,11 +18,12 @@ class SaveManager:
         """
         parts = command.strip().split()
         
-        if len(parts) < 2 or parts[0] != "!save":
+        if len(parts) < 2 or parts[0] != "/save":
             logger.debug("Comando de save mal formatado.")
-            return "Erro: Formato inválido. Use !save [nome] ou !save --overwrite [nome]."
+            return "Erro: Formato inválido. Use /save [nome] ou /save -overwrite [nome]."
         
-        overwrite = "--overwrite" in parts
+        # Suporta tanto -overwrite quanto o shorthand -o
+        overwrite = "-overwrite" in parts or "-o" in parts
         # O nome do arquivo será a última palavra do comando
         filename = parts[-1]
         
