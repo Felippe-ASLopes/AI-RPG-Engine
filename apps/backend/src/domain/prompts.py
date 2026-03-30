@@ -72,3 +72,11 @@ class ConstraintPrompts(str, Enum):
     NO_NSFW = "- É estritamente proibido gerar qualquer conteúdo sexual explícito, erótico ou NSFW.\n"
     NO_GORE = "- É estritamente proibido gerar descrições de violência gráfica extrema, mutilação ou gore.\n"
     BANNED_TOPICS = "- Os seguintes temas/palavras são permanentemente banidos desta narrativa e NUNCA devem ser mencionados: {topics}.\n"
+
+class FeedbackPrompts(str, Enum):
+    # Prompts para injeção de preferências persistentes (Épico 7).
+    PERSISTENT_FEEDBACK_HEADER = "\n\n[PREFERÊNCIAS DO JOGADOR E REGRAS DE TOM (SIGA RIGOROSAMENTE)]\nOs dados abaixo são correções e diretrizes fornecidas pelo jogador. Adapte sua escrita a estas regras:\n\n"
+
+class CheatPrompts(str, Enum):
+    """Prompts para injeção de trapaças persistentes (Épico 39)."""
+    PERSISTENT_CHEAT_HEADER = "\n\n[FATOS IMPOSTOS PELO JOGADOR (TRAPAÇAS - ACEITE COMO VERDADE ABSOLUTA)]\nOs dados abaixo são verdades inquestionáveis do mundo ou habilidades do jogador estabelecidas via comando de trapaça. Aplique-os sempre e não questione:\n\n"

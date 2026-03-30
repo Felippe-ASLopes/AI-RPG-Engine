@@ -137,10 +137,29 @@ async def process_turn(request: ChatRequest):
     para analise futura: 'Quando formos escrever o Controlador (FastAPI), envolveremos a chamada do parse_raw_input num bloco try/except ValueError:. Se o jogador exagerar, o backend devolve um alerta HTTP 400 amigável com a mensagem de erro da exceção, impedindo o RAG e a IA de gastarem processamento.'
 
 ### FASE 6: Controle Narrativo e Estados (Depende do Input)
-* ÉPICO 7: SISTEMA DE FEEDBACK DO JOGADOR
+* ÉPICO 7: SISTEMA DE FEEDBACK DO JOGADOR [CONCLUÍDO]
     * História de Usuário: Como usuário, quero poder corrigir a IA e que ela aprenda com meus feedbacks imediatamente.
     * Tarefa 7.1: Criar arquivo preferences.json para armazenar correções de tom e mecânicas.
     * Tarefa 7.2: Implementar rotina de injeção automática de "Feedback Recente" no topo do contexto da LLM.
+* ÉPICO 39: SISTEMA DE REGRAS E TRAPAÇAS PERSISTENTES (WORLD OVERRIDES) [CONCLUÍDO]
+    * História de Usuário: Como jogador, quero usar o prefixo `$` para estabelecer fatos absolutos ou "trapaças" persistentes, para que a IA os respeite continuamente em todos os turnos sem que eu precise repeti-los.
+    * Requisito Funcional 39.1 (Persistência de Trapaça): Extrair inputs iniciados por `$` e salvá-los fisicamente para persistência.
+    * Requisito Funcional 39.2 (Injeção Contínua): O sistema deve anexar as trapaças ativas de forma rígida no System Prompt da LLM com prioridade máxima (Verdade Absoluta).
+    para analise futura: 'De forma quase idêntica ao Feedback (#), na rota do chat (Controlador), o fluxo que adicionamos no passo anterior receberá apenas esta pequena atualização:' '# INTEGRAÇÃO DE TRAPAÇAS ($) E FEEDBACKS (#)
+    if parsed_input.system_overrides:
+        for cheat in parsed_input.system_overrides:
+            cheat_manager.add_cheat(cheat)
+            
+    if parsed_input.feedback_notes:
+        for note in parsed_input.feedback_notes:
+            feedback_manager.add_feedback(note, category="tone")
+            
+    # Recupera o contexto longo
+    persistent_cheats = cheat_manager.get_persistent_context()
+    persistent_feedback = feedback_manager.get_persistent_context()
+    
+    # Junta tudo no System Prompt
+    final_context = f"{persistent_cheats}\n{persistent_feedback}\n{current_system_additions}"'
 * ÉPICO 11: SISTEMA DE DESFAZER DINÂMICO (UNDO/REWRITE)
     * História de Usuário: Como jogador, quero poder desfazer uma ação indesejada e reescrever o futuro, para que a história siga exatamente como eu planejei.
     * Requisito Funcional 11.1 (Sintaxe de Reversão): Implementar o comando << como gatilho de "rollback".

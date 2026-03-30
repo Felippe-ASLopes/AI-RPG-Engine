@@ -21,3 +21,18 @@ class ParsedInput(BaseModel):
     def has_content(self) -> bool:
         """Retorna True se houver qualquer tipo de dado útil no input."""
         return bool(self.narrative_blocks or self.system_overrides or self.feedback_notes)
+
+class PlayerPreferences(BaseModel):
+    """
+    Épico 7: Entidade que armazena as preferências globais do jogador
+    para tom narrativo e mecânicas do RPG.
+    """
+    tone_corrections: List[str] = []
+    mechanic_rules: List[str] = []
+
+class ActiveCheats(BaseModel):
+    """
+    Épico 39: Entidade que armazena fatos absolutos ou "trapaças"
+    impostas pelo jogador para alterar as regras do mundo.
+    """
+    active_overrides: List[str] = []
