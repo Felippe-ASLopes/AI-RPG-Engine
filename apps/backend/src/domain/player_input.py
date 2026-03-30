@@ -17,10 +17,12 @@ class ParsedInput(BaseModel):
     # Novo campo para o Épico 10 (*)
     forced_queries: List[str] = []
 
+    # NOVO: Épico 32 - Consultas ao Mestre (?)
+    oracle_queries: List[str] = []
+
     @property
     def has_content(self) -> bool:
-        """Retorna True se houver qualquer tipo de dado útil no input."""
-        return bool(self.narrative_blocks or self.system_overrides or self.feedback_notes)
+        return bool(self.narrative_blocks or self.system_overrides or self.feedback_notes or self.oracle_queries)
 
 class PlayerPreferences(BaseModel):
     """

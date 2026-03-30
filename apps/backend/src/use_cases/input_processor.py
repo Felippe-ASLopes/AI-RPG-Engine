@@ -29,9 +29,9 @@ class InputProcessorUseCase:
         if not raw_text.strip():
             return parsed
 
-        # Regex para encontrar prefixos válidos (>, ", $, #, *) no início do texto ou após um espaço.
+        # Regex para encontrar prefixos válidos (>, ", $, #, *, ?) no início do texto ou após um espaço.
         # Captura o prefixo e todo o texto até o próximo prefixo ou fim da string.
-        pattern = r'(?:^|\s)([\>\"\$#\*])\s*(.*?)(?=(?:\s[\>\"\$#\*])|$)'
+        pattern = r'(?:^|\s)([\>\"\$#\*\?])\s*(.*?)(?=(?:\s[\>\"\$#\*\?])|$)'
         matches = re.findall(pattern, raw_text)
 
         # Fallback: Se o jogador não usou nenhum prefixo, assumimos como uma Ação genérica
@@ -46,19 +46,25 @@ class InputProcessorUseCase:
             if not content:
                 continue
 
-            if prefix == '>':
-                parsed.narrative_blocks.append(f"[AÇÃO] {content}")
-            elif prefix == '"':
-                # Remove a aspa de fechamento caso o regex a tenha capturado no content
-                clean_content = content.rstrip('"')
-                # Reinsere as aspas perfeitamente para o contexto da LLM
-                parsed.narrative_blocks.append(f'[FALA] "{clean_content}"')
-            elif prefix == '$':
-                parsed.system_overrides.append(content)
-            elif prefix == '#':
-                parsed.feedback_notes.append(content)
-            elif prefix == '*': # Novo tipo de input para consultas forçadas ao RAG
-                parsed.forced_queries.append(content)
+            match prefix:
+                case '>':
+                    parsed.narrative_blocks.append(f"[AÇÃO] {content}")
+                case '"':
+                    # Remove a aspa de fechamento caso o regex a tenha capturado no content
+                    clean_content = content.rstrip('"')
+                    # Reinsere as aspas perfeitamente para o contexto da LLM
+                    parsed.narrative_blocks.append(f'[FALA] "{clean_content}"')
+                case '$':
+                    parsed.system_overrides.append(content)
+                case '#':
+                    parsed.feedback_notes.append(content)
+                case '*':  # Novo tipo de input para consultas forçadas ao RAG
+                    parsed.forced_queries.append(content)
+                case '?':
+                    parsed.oracle_queries.append(content)
+                case _:
+                    # Prefixo desconhecido — ignora
+                    continue
 
         logger.info(f"Input processado: {len(parsed.narrative_blocks)} Narrativas, {len(parsed.system_overrides)} Trapaças, {len(parsed.feedback_notes)} Feedbacks.")
         return parsed

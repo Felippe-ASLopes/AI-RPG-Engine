@@ -72,3 +72,19 @@ def test_parse_input_within_character_limit():
     parsed = processor.parse_raw_input("> Ataco!")
     
     assert len(parsed.narrative_blocks) == 1
+
+def test_parse_multimodal_input_extracts_oracle_queries():
+    """Testa o Requisito 32.1: Extração do caractere ? para o Oracle Mode."""
+    from src.use_cases.input_processor import InputProcessorUseCase
+    processor = InputProcessorUseCase()
+    
+    raw_text = '> Eu preparo minha espada. ? Qual é a fraqueza de goblins? "Venham!"'
+    parsed = processor.parse_raw_input(raw_text)
+    
+    assert len(parsed.narrative_blocks) == 2
+    assert parsed.narrative_blocks[0] == "[AÇÃO] Eu preparo minha espada."
+    assert parsed.narrative_blocks[1] == '[FALA] "Venham!"'
+    
+    # A pergunta em off foi isolada com sucesso
+    assert len(parsed.oracle_queries) == 1
+    assert parsed.oracle_queries[0] == "Qual é a fraqueza de goblins?"

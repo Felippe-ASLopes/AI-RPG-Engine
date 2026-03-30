@@ -23,12 +23,21 @@
     * Requisito Funcional 19.2 (Exibição Real-time): Implementar uma flag --debug ou uma janela de console paralela que faça o "tail" (leitura em tempo real) do arquivo de log conforme ele é escrito.
     * Requisito Funcional 19.3 (Otimização de Escrita): Utilizar escrita assíncrona ou buffer de log para que o registro no SSD não atrase a geração da IA (latência zero para o jogador).
 
-### FASE 2: Motor Visual e Integração Externa (Depende da Infra Base)
+### FASE 2: Motor Visual e Integração Externa (Depende da Infra Base) [CONCLUÍDO]
 * ÉPICO 5: GERAÇÃO DE IMAGEM COM COERÊNCIA (STABLE DIFFUSION)
     * História de Usuário: Como jogador, quero ver imagens dos cenários e personagens que sejam consistentes visualmente entre si.
     * Tarefa 5.1: Configurar ComfyUI em modo API.
     * Tarefa 5.2: Integrar o nó de IP-Adapter para usar a última imagem gerada como referência de estilo.
     * Tarefa 5.3: Criar pipeline de carregamento de LoRAs de identidade de personagem.
+    para analise futura: '(Dica Arquitetural): Lembra-se do nosso VRAMOptimizer? Quando formos juntar tudo no ficheiro main.py (Controlador), o fluxo será:
+
+await vram_optimizer.swap_to_image_mode()
+
+await image_generator.generate_scene_image(...)
+
+await vram_optimizer.swap_to_text_mode().
+
+Isto garante que a sua RX 7600 de 8GB nunca entra em colapso (Out-Of-Memory)!'
 * ÉPICO 6: CONEXÃO COM O MUNDO REAL (WEB SEARCH)
     * História de Usuário: Como jogador, quero que a IA pesquise fatos reais na internet se eu interagir com locais ou eventos do mundo real.
     * Tarefa 6.1: Integrar API de busca (Serper ou DuckDuckGo) ao orquestrador.
@@ -136,12 +145,12 @@ async def process_turn(request: ChatRequest):
     * Requisito Funcional 33.2 (Validação de Input): O Processador de Input deve rejeitar a requisição e lançar um erro estruturado se o texto bruto do jogador ultrapassar o `MAX_INPUT_CHARACTERS` definido.
     para analise futura: 'Quando formos escrever o Controlador (FastAPI), envolveremos a chamada do parse_raw_input num bloco try/except ValueError:. Se o jogador exagerar, o backend devolve um alerta HTTP 400 amigável com a mensagem de erro da exceção, impedindo o RAG e a IA de gastarem processamento.'
 
-### FASE 6: Controle Narrativo e Estados (Depende do Input)
-* ÉPICO 7: SISTEMA DE FEEDBACK DO JOGADOR [CONCLUÍDO]
+### FASE 6: Controle Narrativo e Estados (Depende do Input) [CONCLUÍDO]
+* ÉPICO 7: SISTEMA DE FEEDBACK DO JOGADOR
     * História de Usuário: Como usuário, quero poder corrigir a IA e que ela aprenda com meus feedbacks imediatamente.
     * Tarefa 7.1: Criar arquivo preferences.json para armazenar correções de tom e mecânicas.
     * Tarefa 7.2: Implementar rotina de injeção automática de "Feedback Recente" no topo do contexto da LLM.
-* ÉPICO 39: SISTEMA DE REGRAS E TRAPAÇAS PERSISTENTES (WORLD OVERRIDES) [CONCLUÍDO]
+* ÉPICO 39: SISTEMA DE REGRAS E TRAPAÇAS PERSISTENTES (WORLD OVERRIDES)
     * História de Usuário: Como jogador, quero usar o prefixo `$` para estabelecer fatos absolutos ou "trapaças" persistentes, para que a IA os respeite continuamente em todos os turnos sem que eu precise repeti-los.
     * Requisito Funcional 39.1 (Persistência de Trapaça): Extrair inputs iniciados por `$` e salvá-los fisicamente para persistência.
     * Requisito Funcional 39.2 (Injeção Contínua): O sistema deve anexar as trapaças ativas de forma rígida no System Prompt da LLM com prioridade máxima (Verdade Absoluta).
@@ -175,7 +184,7 @@ async def process_turn(request: ChatRequest):
     * Requisito Funcional 32.1 (Bloqueio de Contexto Narrativo): Implementar o caractere `?` para tirar dúvidas sem avançar o turno (ex: `? qual é a fraqueza de goblins`). Ao ser acionado, o sistema congela o buffer de chat atual e impede que a resposta da IA seja escrita no arquivo de histórico da campanha.
     * Requisito Funcional 32.2 (Processamento de Baixo Custo): A consulta deve desativar o pipeline de imagem (ComfyUI) e focar apenas na recuperação de dados do RAG ou Atlas Local para responder.
     * Requisito Funcional 32.3 (Preservação de Turno): Após a resposta da IA, a interface deve restaurar exatamente o estado do input do jogador, permitindo que ele continue sua jogada original com a nova informação.
-* ÉPICO 36: EXTRAÇÃO DE PRESETS EM TEMPO REAL (IN-GAME EXPORT) [CONCLUÍDO]
+* ÉPICO 36: EXTRAÇÃO DE PRESETS EM TEMPO REAL (IN-GAME EXPORT)
     * História de Usuário: Como mestre/jogador, quero poder salvar personagens, objetos ou locais criados espontaneamente pela IA durante a campanha, para reutilizá-los em outras aventuras no futuro.
     * Requisito Funcional 36.1 (Comando de Extração): Implementar o comando `/save -entity @tag` ou a sua forma abreviada `/save -e @tag`. O sistema deve isolar a requisição e não avançar o tempo da narrativa.
     * Requisito Funcional 36.2 (Recuperação RAG): O sistema deve consultar o banco vetorial (ChromaDB) e o buffer de contexto em busca de menções e descrições prévias da `@tag`.
@@ -199,17 +208,17 @@ async def process_turn(request: ChatRequest):
     * História de Usuário: Como jogador, quero botões e atalhos de teclado rápidos para inserir os blocos de 'Ação', 'Fala' ou 'Trapaça', para manter o ritmo da jogatina.
     * Requisito Funcional 22.1 (Quick-Actions): Implementar atalhos (ex: Ctrl + G para Fala, Ctrl + A para Ação) que inserem automaticamente os caracteres de bloco.
     * Requisito Funcional 22.2 (Interface Adaptativa): Exibir ícones discretos ao lado da caixa de input indicando qual "Modo de Bloco" está ativo no momento.
-* ÉPICO 26: DASHBOARD DE STATUS E INVENTÁRIO (PLAYER HUD)
+* ÉPICO 26: DASHBOARD DE STATUS E INVENTÁRIO (PLAYER HUD) [CONCLUÍDO]
     * História de Usuário: Como jogador, quero visualizar meus atributos (Vida, Mana, Nível) e itens em uma interface auxiliar rápida para não precisar perguntar à IA o tempo todo.
     * Requisito Funcional 26.1 (Visualização de Atributos): Painel dinâmico com barras de status e lista de inventário.
     * Requisito Funcional 26.2 (Detalhamento de Entidades): Ao clicar em um item ou @NPC no HUD, abrir uma "Modal" (janela sobreposta) com Descrição, Personalidade e 'Marcos Narrativos'.
     * Requisito Funcional 26.3 (Ícones Otimizados): Suporte a ícones 64x64px com prioridade para arquivos locais em /UI/Icons/.
-* ÉPICO 27: GERENCIADOR DE OBJETIVOS E INTENÇÕES (QUEST LOG)
+* ÉPICO 27: GERENCIADOR DE OBJETIVOS E INTENÇÕES (QUEST LOG) [CONCLUÍDO]
     * História de Usuário: Como jogador, quero registrar minhas intenções e objetivos para que a história tenha um norte, mas sem que a IA dê spoilers ou force o cumprimento deles.
     * Requisito Funcional 27.1 (Diferenciação Intenção vs. Objetivo): Intenção (Curto prazo/Pensamento) e Objetivo de Campanha (Longo prazo).
     * Requisito Funcional 27.2 (Visão Subjetiva): Os textos de objetivos devem ser escritos e exibidos sob a perspectiva do personagem (conhecimento limitado).
     * Requisito Funcional 27.3 (Injeção Condicional de Contexto): O sistema de filtragem só deve injetar o objetivo no prompt da LLM se a @entidade relacionada estiver presente na cena atual.
-* ÉPICO 28: CICLO DE VIDA DE OBJETIVOS
+* ÉPICO 28: CICLO DE VIDA DE OBJETIVOS [CONCLUÍDO]
     * História de Usuário: Como jogador, quero que meus objetivos mudem de status (Concluído/Fracassado) para que a IA pare de considerá-los após o desfecho.
     * Requisito Funcional 28.1 (Trigger de Finalização): Ao detectar que um objetivo foi cumprido ou tornou-se impossível, mover o dado para o 'Histórico de Marcos' do RAG e remover do prompt ativo.
     * Requisito Funcional 28.2 (Persistência no Save): O estado do HUD e do Quest Log deve ser serializado dentro do arquivo de save manual/automático da campanha.
@@ -220,7 +229,7 @@ async def process_turn(request: ChatRequest):
     * Requisito Funcional 31.3 (Input Zero-Type): Permitir o envio de comandos compostos apenas por cliques (Ex: [Ação] + [Atacar] + [@rival] -> Enviar).
 
 ### FASE 8: Cartografia e Features Meta-Narrativas (Depende do Jogo rodando)
-* ÉPICO 29: DIÁRIO DE MARCOS NARRATIVOS (CHRONICLE LOG)
+* ÉPICO 29: DIÁRIO DE MARCOS NARRATIVOS (CHRONICLE LOG) [CONCLUÍDO]
     * História de Usuário: Como jogador, quero uma lista simplificada dos grandes feitos e erros da minha campanha para revisar a história rapidamente.
     * Requisito Funcional 29.1 (Sumarização Automática): A LLM deve identificar eventos de alto impacto e extrair para um arquivo chronicle.md em tópicos.
     * Requisito Funcional 29.2 (Interface de Resumo): Exibição de uma timeline textual limpa, focada apenas em fatos consumados.
@@ -229,4 +238,4 @@ async def process_turn(request: ChatRequest):
     * Requisito Funcional 30.1 (Geração de Tiles de Bioma): O background do mapa deve ser gerado por IA (Stable Diffusion) em "tiles" simplificados que representam a transição.
     * Requisito Funcional 30.2 (Ícones de Localidade Angulados): Gerar ícones estilo "visão de satélite angulada" para pontos de interesse e sobrepor ao mapa.
     * Requisito Funcional 30.3 (Trilha Narrativa): Conectar localidades visitadas com elementos visuais dinâmicos que indicam o caminho percorrido.
-    * Requisito Funcional 30.4 (Navegação Visual): Implementar funcionalidade de Pan & Zoom na interface gráfica (Canvas/WebG) para exploração do mapa gerado.
+    * Requisito Funcional 30.4 (Navegação Visual) [CONCLUÍDO]: Implementar funcionalidade de Pan & Zoom na interface gráfica (Canvas/WebG) para exploração do mapa gerado.
