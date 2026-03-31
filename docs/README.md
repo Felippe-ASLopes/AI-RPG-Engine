@@ -1,6 +1,5 @@
 # DOCUMENTAÇÃO DE ARQUITETURA: FELPINHO's RPG ENGINE
-
-## 1. VISÃO GERAL
+## 1. Escopo
 O FELPINHO's RPG Engine é um sistema de RPG de texto de codificação local e modular, projetado para rodar em hardware doméstico. O objetivo é criar uma experiência imersiva de longa duração com memória persistente, coerência visual e acesso híbrido a dados (Local, RAG e Web).
 
 ## 2. ESPECIFICAÇÕES DE HARDWARE (TARGET)
@@ -16,14 +15,13 @@ O projeto utiliza a **Clean Architecture** para garantir que as regras do RPG fi
 - **Adapters (Adaptadores):** Camada de conexão com ferramentas externas (ex: ChromaDB, Repositórios SQLite, APIs do KoboldCPP e ComfyUI).
 
 ## 4. COMPONENTES DA INFRAESTRUTURA E TECNOLOGIAS
-
 ### A. Frontend (Interface, HUD e UX)
-- **Framework:** Tauri (utilizando WebView2 nativo para otimização extrema de uso de RAM no Windows 11).
-- **Tecnologias:** React com TypeScript.
+- **Framework:** Tauri
+- **Tecnologias:** React + TypeScript
 - **Responsabilidade:** Renderizar o terminal de texto, Player HUD, Quest Log, mapas procedurais interativos (Canvas/WebGL) e formulários dinâmicos de setup.
 
 ### B. Backend (Orquestração e Lógica de Negócio)
-- **Framework:** Python utilizando FastAPI.
+- **Framework:** Python + FastAPI.
 - **Responsabilidade:** Servidor assíncrono para gestão do fluxo de turnos, roteamento de inputs, logger em tempo real e orquestração das APIs de inteligência artificial.
 - **Banco de Dados Relacional/Estado:** SQLite (armazenamento leve e local das entidades, arquivos de configuração, inventário e preferências de jogador).
 - **Banco de Dados Vetorial (RAG):** ChromaDB local para indexação semântica e recuperação de memórias de longo prazo e marcos narrativos.
@@ -39,10 +37,12 @@ O projeto utiliza a **Clean Architecture** para garantir que as regras do RPG fi
 - **Responsabilidade:** Renderizar cenários e avatares utilizando LoRA e IP-Adapter para manter a identidade dos NPCs e coerência visual entre os turnos.
 
 ## 5. SISTEMA DE CONTEXTO LOCAL (ASSETS & METADATA)
-Para garantir a verossimilhança do mundo e forçar a criatividade da IA dentro de limites pré-estabelecidos, o sistema utiliza um diretório estruturado:
+Para garantir a verossimilhança do mundo e forçar a criatividade da IA dentro dos limites, o sistema utiliza um diretório estruturado:
 * **/Assets/Scenery/** e **/Assets/Characters/**: Imagens e referências visuais.
 * **/Metadata/**: Arquivos JSON com `tags`, `description` técnica e `style_prompt`.
-* **/Global_Library/**: Presets reutilizáveis e modulares globais de NPCs e itens.
+* **/Global_Library/**: Presets de NPCs e itens.
+* **Atlas Local (SQLite):** mapeia as entidades ativas do jogo (ex: `@Forest`, `@Merchant`) para descrições e atributos, permitindo que a LLM acesse informações contextuais de FATOS.
+* **RAG**: O ChromaDB é utilizado para armazenar memórias de longo prazo, como eventos passados, decisões do jogador e marcos narrativos, permitindo que a LLM recupere informações relevantes para manter a coerência da história ao longo do tempo.
 
 ## 6. FLUXO DE EXECUÇÃO (PIPELINE E VRAM SWAP)
 1. **Captura de Input:** O Tauri (React) empacota o comando do jogador e envia para o FastAPI.
