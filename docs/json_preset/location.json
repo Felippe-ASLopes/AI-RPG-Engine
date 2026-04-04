@@ -1,45 +1,39 @@
 {
-    "territories": [
+    "locations": [
         {
             "id": "uuid",
             "name": "Cidade de Ferro",
-            "type": "CIDADE | VILAREJO | REGIAO_SELVAGEM",
+            "type": "CIDADE | VILAREJO | REGIAO_SELVAGEM | BASE | TAVERNA | LOJA | DUNGEON",
             "description": "Uma metrópole industrial em ruínas, onde a névoa do Vazio é mais densa.",
-            "appearance": "Prédios de metal enferrujado, ruas cobertas de névoa e um ambiente opressivo.",
+            "appearance": { // criar uma tabela para isso // objeto compartilhado com personagens e itens
+                "id": "uuid-ou-slug-unico",
+                "characteristics": [
+                    "Prédios de metal enferrujado",
+                    "ruas cobertas de névoa"
+                ],
+                "metadata": { // opcional: para referência visual ou geração de imagem
+                    "lora_ref": "kaelen_v1",
+                    "img_path": "...",
+                    "img_alt_path": "..."
+                }
+            },
             "atmosphere": {
-                "mood": "Opressivo e melancólico",
-                "sounds": [
+                "mood": [
+                    "Opressivo",
+                    "melancólico"
+                ],
+                "lighting": [
+                    "Estilo de iluminação baseado no 'atmosphere"
+                ], // opcional: para referência visual ou geração de imagem
+                "sounds": [ // opcional: para referência narrativa ou geração de áudio
                     "Engrenagens rangendo",
                     "Vento sibilante entre o metal"
-                ],
-                "danger_level": 7
+                ]
             },
             "status": {
                 "is_discovered": true,
-                "is_accessible": true,
-                "faction_control": "Engenheiros"
-            },
-            "locations": [
-                {
-                    "id": "qg-engenheiros",
-                    "name": "QG dos Engenheiros",
-                    "type": "BASE | TAVERNA | LOJA | DUNGEON",
-                    "description": "Um complexo subterrâneo cheio de máquinas e experimentos.",
-                    "appearance": "Estruturas de metal enferrujado, luzes piscando e ambiente claustrofóbico.",
-                    "narrative_hooks": [
-                        "Um som de vapor vazando vindo da sala de máquinas",
-                        "Documentos espalhados sobre uma mesa de carvalho"
-                    ],
-                    "required_item_id": "cartao_acesso_vazio",
-                    "metadata": {
-                        "img_path": "...",
-                        "img_alt_path": "..."
-                    }
-                }
-            ],
-            "metadata": {
-                "img_path": "...",
-                "img_alt_path": "..."
+                "was_accessed": true,
+                "required_item": "cartao_acesso" //opicional  // relacionamento com entitie de itens
             }
         }
     ]
