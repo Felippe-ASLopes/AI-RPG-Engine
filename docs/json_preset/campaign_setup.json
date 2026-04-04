@@ -1,0 +1,237 @@
+{
+    "title": "O Despertar do Vazio",
+    "theme": "Dark Fantasy / Steampunk",
+    "tone": "Sombrio e Realista",
+    "world_rules": [
+        "permadeath",
+        "A tecnologia é movida por uma energia misteriosa chamada 'Vazio', que corrompe tudo o que toca",
+        "As máquinas são onipresentes, mas todas estão falhando lentamente devido à corrupção do Vazio",
+        "A sociedade é dividida entre os 'Engenheiros', que tentam controlar o Vazio, e os 'Puristas', que buscam destruí-lo"
+    ],
+    "territories": [
+        {
+            "name": "Cidade de Ferro",
+            "description": "Uma metrópole industrial em ruínas, onde a névoa do Vazio é mais densa",
+            "appearance": "Prédios de metal enferrujado, ruas cobertas de névoa e um ambiente opressivo",
+            "locations": [
+                {
+                    "name": "QG dos Engenheiros",
+                    "description": "Um complexo subterrâneo cheio de máquinas e experimentos, onde os Engenheiros tentam conter o Vazio",
+                    "appearance": "Estruturas de metal enferrujado, luzes piscando e um ambiente claustrofóbico",
+                    "metadata": {
+                        "img_path": "https://example.com/qg_dos_engenheiros.jpg",
+                        "img_alt_path": "https://example.com/qg_dos_engenheiros.md"
+                    }
+                }
+            ],
+            "metadata": {
+                "img_path": "https://example.com/qg_dos_engenheiros.jpg",
+                "img_alt_path": "https://example.com/qg_dos_engenheiros.md"
+            }
+        },
+        {
+            "name": "Porto de Ferro",
+            "description": "Uma cidade industrial coberta por névoa ácida.",
+            "appearance": "Docks enferrujados, navios abandonados e um ambiente tóxico",
+            "locations": [
+                {
+                    "name": "Origem do Vazio",
+                    "description": "Um local misterioso onde o Vazio começou a se espalhar, cheio de ruínas e segredos antigos"
+                }
+            ],
+            "metadata": {
+                "img_path": "https://example.com/qg_dos_engenheiros.jpg",
+                "img_alt_path": "https://example.com/qg_dos_engenheiros.jpg"
+            }
+        }
+    ],
+    "quests": [
+        {
+            "title": "Descobrir a origem da névoa",
+            "description": "Investigar o Porto de Ferro e encontrar pistas sobre a fonte do Vazio",
+            "is_mandatory": true
+        },
+        {
+            "title": "Salvar Marcos",
+            "description": "Encontrar e resgatar Marcos, que desapareceu durante uma expedição ao Porto de Ferro",
+            "is_mandatory": false
+        }
+    ],
+    "player": {
+        "name": "Felps",
+        "description": "Um aventureiro solitário com um passado misterioso, que se vê envolvido na luta contra o Vazio",
+        "appearance": [
+            "Cabelos escuros",
+            "olhos penetrantes",
+            "uma cicatriz no rosto"
+        ],
+        "backstory": "Um ex-soldado em busca de redenção",
+        "skills": [
+            "Combate corpo a corpo",
+            "Tática militar",
+            "Conhecimento de máquinas"
+        ],
+        "inventory": [
+            {
+                "name": "Espada enferrujada",
+                "description": "Uma espada antiga e enferrujada, mas ainda afiada o suficiente para ser útil em combate",
+                "appearance": "Lâmina de metal corroída, com um cabo de couro gasto",
+                "metadata": {
+                    "img_path": "https://example.com/qg_dos_engenheiros.jpg",
+                    "img_alt_path": "https://example.com/qg_dos_engenheiros.jpg"
+                },
+                "type": "Arma",
+                "effects": [
+                    "+2 de dano corpo a corpo"
+                ],
+                "location": "Cidade de Ferro"
+            }
+        ],
+        "weaknesses": [
+            "Não sabe nadar"
+        ],
+        "relationships": [
+            {
+                "name": "Marcos",
+                "level": "Amigo",
+                "can_companion": true,
+                "can_romance": false
+            },
+            {
+                "name": "Lilla",
+                "level": "Aliado",
+                "can_companion": true,
+                "can_romance": true
+            }
+        ],
+        "metadata": {
+            "img_path": "./qg_dos_engenheiros.jpg",
+            "img_alt_path": "./qg_dos_engenheiros.jpg"
+        }
+    },
+    "characters": [
+        {
+            "name": "Marcos",
+            "description": "Um explorador corajoso que desapareceu durante uma expedição ao Porto de Ferro, deixando para trás um diário cheio de pistas sobre o Vazio",
+            "appearance": "Cabelos escuros, olhos penetrantes e uma cicatriz no rosto",
+            "metadata": {
+                "img_path": "https://example.com/qg_dos_engenheiros.jpg",
+                "img_alt_path": "https://example.com/qg_dos_engenheiros.jpg"
+            },
+            "backstory": "Um ex-soldado em busca de redenção",
+            "personality": "Determinado, corajoso e um pouco cínico.",
+            "skills": [
+                "Combate corpo a corpo",
+                "Tática militar",
+                "Conhecimento de máquinas"
+            ],
+            "weaknesses": [
+                "Não sabe nadar"
+            ],
+            "location": "Porto de Ferro",
+            "ocupation": "Ferreeiro"
+        },
+        {
+            "name": "Lilla",
+            "description": "Uma mulher enigmática e carismática que lidera os Engenheiros na luta contra o Vazio, mas tem seus próprios segredos",
+            "appearance": "Cabelos loiros, olhos azuis e um sorriso misterioso",
+            "metadata": {
+                "img_path": "https://example.com/qg_dos_engenheiros.jpg",
+                "img_alt_path": "https://example.com/qg_dos_engenheiros.jpg"
+            },
+            "backstory": "Uma líder nata com um passado obscuro",
+            "personality": "Carismática, inteligente e um pouco manipuladora.",
+            "skills": [
+                "Liderança",
+                "Conhecimento de máquinas",
+                "Persuasão"
+            ],
+            "inventory": [
+                "Chave mestra",
+                "Diário de experimentos",
+                "Mapa do QG dos Engenheiros"
+            ],
+            "weaknesses": [
+                "Desconfiança dos outros"
+            ]
+        }
+    ],
+    "items": [
+        {
+            "name": "Espada enferrujada",
+            "description": "Uma espada antiga e enferrujada, mas ainda afiada o suficiente para ser útil em combate",
+            "appearance": "Lâmina de metal corroída, com um cabo de couro gasto",
+            "metadata": {
+                "img_path": "https://example.com/qg_dos_engenheiros.jpg",
+                "img_alt_path": "https://example.com/qg_dos_engenheiros.jpg"
+            },
+            "type": "Arma",
+            "effects": [
+                "+2 de dano corpo a corpo"
+            ],
+            "location": "Cidade de Ferro"
+        },
+        {
+            "name": "Mapa do Porto de Ferro",
+            "description": "Um mapa detalhado do Porto de Ferro, mostrando pontos de interesse e áreas perigosas",
+            "type": "Ferramenta",
+            "location": "Cidade de Ferro"
+        },
+        {
+            "name": "Diário de Marcos",
+            "description": "O diário pessoal de Marcos, cheio de anotações sobre suas descobertas e teorias sobre o Vazio",
+            "type": "Informação",
+            "effects": [
+                "Fornece pistas sobre a origem do Vazio e como combatê-lo"
+            ],
+            "location": "Porto de Ferro"
+        }
+    ],
+    "events": [
+        {
+            "name": "Invasão do Vazio",
+            "description": "O Vazio começa a se espalhar rapidamente, corrompendo tudo em seu caminho e ameaçando destruir a Cidade de Ferro",
+            "trigger": "Após o jogador investigar o Porto de Ferro",
+            "outcomes": [
+                "A Cidade de Ferro é destruída",
+                "O jogador é forçado a fugir para o QG dos Engenheiros"
+            ]
+        },
+        {
+            "name": "Traição de Lilla",
+            "description": "Lilla revela que tem seus próprios planos para o Vazio e trai o jogador, tentando impedi-lo de descobrir a verdade",
+            "trigger": "Após o jogador ganhar a confiança de Lilla",
+            "outcomes": [
+                "Lilla se torna um inimigo",
+                "O jogador perde acesso ao QG dos Engenheiros"
+            ]
+        }
+    ],
+    "milestones": [
+        {
+            "name": "Descoberta do Vazio",
+            "description": "O jogador descobre a existência do Vazio e começa a entender sua ameaça",
+            "criteria": "Investigar o Porto de Ferro e encontrar pistas sobre o Vazio"
+        },
+        {
+            "name": "Resgate de Marcos",
+            "description": "O jogador encontra e resgata Marcos, ganhando um aliado valioso na luta contra o Vazio",
+            "criteria": "Encontrar Marcos no Porto de Ferro e levá-lo para um local seguro"
+        },
+        {
+            "name": "Confronto com Lilla",
+            "description": "O jogador confronta Lilla sobre suas verdadeiras intenções, levando a uma batalha decisiva",
+            "criteria": "Descobrir a traição de Lilla e enfrentá-la em combate"
+        }
+    ],
+    "config": {
+        "content_gating": {
+            "allow_nsfw": false,
+            "allow_gore": true,
+            "banned_themes": [
+                "tortura"
+            ]
+        },
+        "difficulty": "Hard"
+    }
+}

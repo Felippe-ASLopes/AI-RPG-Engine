@@ -1,0 +1,46 @@
+{
+    "territories": [
+        {
+            "id": "uuid",
+            "name": "Cidade de Ferro",
+            "type": "CIDADE | VILAREJO | REGIAO_SELVAGEM",
+            "description": "Uma metrópole industrial em ruínas, onde a névoa do Vazio é mais densa.",
+            "appearance": "Prédios de metal enferrujado, ruas cobertas de névoa e um ambiente opressivo.",
+            "atmosphere": {
+                "mood": "Opressivo e melancólico",
+                "sounds": [
+                    "Engrenagens rangendo",
+                    "Vento sibilante entre o metal"
+                ],
+                "danger_level": 7
+            },
+            "status": {
+                "is_discovered": true,
+                "is_accessible": true,
+                "faction_control": "Engenheiros"
+            },
+            "locations": [
+                {
+                    "id": "qg-engenheiros",
+                    "name": "QG dos Engenheiros",
+                    "type": "BASE | TAVERNA | LOJA | DUNGEON",
+                    "description": "Um complexo subterrâneo cheio de máquinas e experimentos.",
+                    "appearance": "Estruturas de metal enferrujado, luzes piscando e ambiente claustrofóbico.",
+                    "narrative_hooks": [
+                        "Um som de vapor vazando vindo da sala de máquinas",
+                        "Documentos espalhados sobre uma mesa de carvalho"
+                    ],
+                    "required_item_id": "cartao_acesso_vazio",
+                    "metadata": {
+                        "img_path": "...",
+                        "img_alt_path": "..."
+                    }
+                }
+            ],
+            "metadata": {
+                "img_path": "...",
+                "img_alt_path": "..."
+            }
+        }
+    ]
+}

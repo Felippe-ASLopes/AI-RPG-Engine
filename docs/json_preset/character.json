@@ -1,0 +1,112 @@
+{
+    "name": "Felps",
+    "description": "Um aventureiro solitário com um passado misterioso, que se vê envolvido na luta contra o Vazio",
+    "personality": [
+        "Determinado",
+        "corajoso",
+        "cínico"
+    ], // apenas para npcs
+    "appearance": {
+        "face": [
+            "cicatriz na bochecha esquerda"
+        ],
+        "body": [
+            "atlético"
+        ],
+        "clothing": [
+            "trajes de soldado veterano"
+        ]
+    },
+    "backstory": "Um ex-soldado em busca de redenção",
+    "skills": [
+        {
+            "name": "lookpicking",
+            "level": 5
+        }
+    ], // level de 1 a 10, Sucesso critico aumenta o nivel em 1, falha critica diminui o nivel em 1? armazena  o total de sucessos e falhas criticas para calculo de nível? armazena effects para buffs e debuffs temporarios relacionado a sucesso/falha critica anteriores?
+    "inventory": [
+        {
+            "name": "Espada enferrujada",
+            "description": "Uma espada antiga e enferrujada, mas ainda afiada o suficiente para ser útil em combate", // deve ser chamada apenas se o jogador chamar @item:Espada enferrujada
+            "appearance": [
+                "Lâmina de metal corroída",
+                "cabo de couro gasto"
+            ],
+            "metadata": {
+                "img_path": "https://example.com/qg_dos_engenheiros.jpg",
+                "img_alt_path": "https://example.com/qg_dos_engenheiros.jpg"
+            },
+            "type": "Arma",
+            "effects": [
+                {
+                    "type": "dano",
+                    "value": 10
+                },
+                {
+                    "type": "status",
+                    "value": "sangramento"
+                }
+            ],
+            "durability": 50 // de 0 a 100, 0 é inutilizável, 100 é novo
+        }
+    ],
+    "weaknesses": [
+        "Não sabe nadar"
+    ],
+    "relationships": [
+        {
+            "name": "Marcos",
+            "level": "Amigo",
+            "can_companion": true,
+            "can_romance": false
+        },
+        {
+            "name": "Lilla",
+            "level": "Aliado",
+            "can_companion": true,
+            "can_romance": true
+        }
+    ],
+    "metadata": {
+        "img_path": "./qg_dos_engenheiros.jpg",
+        "img_alt_path": "./qg_dos_engenheiros.jpg"
+    },
+    "status": {
+        "hp": 100,
+        "mana": 50,
+        "stamina": 75,
+        "injuries": []
+    },
+    "equipment": {
+        "head": null,
+        "body": null,
+        "legs": null,
+        "feet": null,
+        "hands": null,
+        "shield": null,
+        "weapon": { // deve remover item do inventário e colocar aqui quando equipado, e vice versa
+            "name": "Espada enferrujada",
+            "description": "Uma espada antiga e enferrujada, mas ainda afiada o suficiente para ser útil em combate",
+            "appearance": [
+                "Lâmina de metal corroída",
+                "cabo de couro gasto"
+            ],
+            "metadata": {
+                "img_path": "https://example.com/qg_dos_engenheiros.jpg",
+                "img_alt_path": "https://example.com/qg_dos_engenheiros.jpg"
+            },
+            "type": "Arma",
+            "effects": [
+                {
+                    "type": "dano",
+                    "value": 10
+                },
+                {
+                    "type": "status",
+                    "value": "sangramento"
+                }
+            ],
+            "durability": 50
+        }
+    }
+}

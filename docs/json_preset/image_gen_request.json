@@ -1,0 +1,74 @@
+{
+  "image_gen_request": {
+    "session_info": {
+      "id": "uuid-da-cena",
+      "campaign_id": "nome-da-campanha",
+      "seed": 12345, // Opcional: para gerar a mesma imagem a partir do mesmo prompt
+      "prompt": "atualizar esse campo apos criar o prompt para a IA"
+    },
+    "scene_config": {
+      "style": "realista | cartoon | pixel art | aquarela | futurista | medieval",
+      "aspect_ratio": "16:9",
+      "visual_intensity": "cinematic",
+      "format": "png | jpeg | bmp | etc.", // geramente definido no backend
+      "resolution": "512x512 | 1024x1024 | 2048x2048 | etc.", // geramente definido no backend
+      "num_images": 1 // Opcional: número de variações da imagem a serem geradas // geramente definido no backend
+    },
+    "characters": [
+      {
+        "name": "Nome do Personagem",
+        "current_appearance": {
+          "face": [
+            "cicatriz na bochecha esquerda"
+          ],
+          "body": [
+            "atlético"
+          ],
+          "clothing": [
+            "trajes de soldado veterano"
+          ]
+        },
+        "metadata": {
+          "lora_ref": "kaelen_v1",
+          "img_path": "https://example.com/personagem.jpg",
+          "img_alt_path": "https://example.com/personagem_alt.jpg"
+        },
+        "itens": [
+          {
+            "name": "Espada enferrujada",
+            "appearance": [
+              "Lâmina de metal corroída",
+              "cabo de couro gasto"
+            ],
+            "metadata": {
+              "lora_ref": "kaelen_v1",
+              "img_path": "https://example.com/espada.jpg",
+              "img_alt_path": "https://example.com/espada_alt.jpg"
+            },
+            "current_state": [
+              "Segurando a espada com a mão direita"
+            ]
+          }
+        ],
+        "pose_action": [
+          "pose de combate",
+          "com expressão agressiva"
+        ]
+      }
+    ],
+    "location": {
+      "name": "Nome do Local",
+      "appearance": [
+        "Prédios de metal enferrujado",
+        "ruas cobertas de névoa"
+      ],
+      "lighting": "Estilo de iluminação baseado no 'atmosphere",
+      "weather": "chuvoso",
+      "time_of_day": "noite",
+      "metadata": {
+        "img_path": "https://example.com/local.jpg",
+        "img_alt_path": "https://example.com/local_alt.jpg"
+      }
+    }
+  }
+}

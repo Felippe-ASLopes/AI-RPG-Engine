@@ -1,0 +1,58 @@
+{
+    "name": "Espada enferrujada",
+    "description": "Uma espada antiga e enferrujada, mas ainda afiada o suficiente para ser útil em combate",
+    "appearance": [
+        "Lâmina de metal corroída",
+        "cabo de couro gasto"
+    ],
+    "metadata": {
+        "img_path": "https://example.com/qg_dos_engenheiros.jpg",
+        "img_alt_path": "https://example.com/qg_dos_engenheiros.jpg"
+    },
+    "type": "Arma",
+    "effects": [
+        {
+            "type": "dano",
+            "value": 10
+        },
+        {
+            "type": "status",
+            "value": "sangramento"
+        }
+    ],
+    "durability": 50
+}
+
+{
+    "id": "uuid-ou-slug-unico",
+    "name": "Nome do Item",
+    "description": "Descrição narrativa para o jogador.",
+    "type": "ARMA | RUNA | SABEDORIA | CONSUMIVEL | MUNICAO | ARMADURA | FERRAMENTA | MISCELANEA | CHAVE | DOCUMENTO | RECURSO | ROUPA | ACESSORIO",
+    "rarity": "comum | raro | epico | lendario",
+    "quantity": 1,
+    "appearance": [
+        "Característica visual 1",
+        "Característica visual 2"
+    ],
+    "metadata": {
+        "img_path": "https://example.com/imagem.jpg",
+        "img_alt_path": "https://example.com/imagem_alt.jpg"
+    },
+    "effects": [
+        {
+            "category": "MECANICO | NARRATIVO | ATRIBUTO",
+            "type": "dano | cura | status | revelacao | buff",
+            "value": "10 | sangramento | 'Floresta Sombria' | +2 Força",
+            "duration": "permanente | 3_turnos | uso_unico"
+        }
+    ],
+    "properties": {
+        "durability": {
+            "current": 50,
+            "max": 100
+        },
+        "requirements": {
+            "strength": 12
+        }
+    }
+}

@@ -1,0 +1,137 @@
+{
+    "world_state": {
+        "location": {
+            "name": "Taverna",
+            "tags": [
+                "iluminação baixa"
+            ]
+        },
+        "active_npcs": [
+            {
+                "name": "Kaelen",
+                "mood": "suspicious"
+            }
+        ],
+        "weather": "chuvoso",
+        "time_of_day": "noite"
+    },
+    "world_rules": [
+        "permadeath",
+        "A tecnologia é movida por uma energia misteriosa chamada 'Vazio', que corrompe tudo o que toca",
+        "As máquinas são onipresentes, mas todas estão falhando lentamente devido à corrupção do Vazio",
+        "A sociedade é dividida entre os 'Engenheiros', que tentam controlar o Vazio, e os 'Puristas', que buscam destruí-lo"
+    ],
+    "player": {
+        "name": "Felps",
+        "skills": [
+            "Combate corpo a corpo",
+            "Tática militar",
+            "Conhecimento de máquinas"
+        ],
+        "weaknesses": [
+            "Não sabe nadar"
+        ],
+        "inventory": [
+            "Espada enferrujada",
+            "Mapa do Porto de Ferro",
+            "Diário de Marcos"
+        ],
+        "relationships": [
+            {
+                "name": "Lilla",
+                "type": "Aliado",
+                "can_companion": true,
+                "can_romance": true
+            }
+        ],
+        "status": {
+            "hp": 100,
+            "mana": 50,
+            "stamina": 75,
+            "injuries": []
+        },
+        "equipment": {
+            "head": null,
+            "body": null,
+            "legs": null,
+            "feet": null,
+            "hands": null,
+            "weapon": {
+                "name": "Espada enferrujada",
+                "damage": 10,
+                "effects": [
+                    "Causa sangramento"
+                ]
+            },
+            "shield": null
+        },
+        "companions": [
+            {
+                "name": "Lilla",
+                "skills": [
+                    "Liderança",
+                    "Conhecimento de máquinas",
+                    "Persuasão"
+                ],
+                "weaknesses": [
+                    "Desconfiança dos outros"
+                ],
+                "inventory": [
+                    "Chave mestra"
+                ],
+                "mood": "com medo",
+                "status": {
+                    "hp": 80,
+                    "mana": 60,
+                    "stamina": 70,
+                    "injuries": [
+                        "corte no braço"
+                    ]
+                },
+                "equipment": {
+                    "head": null,
+                    "body": null,
+                    "legs": null,
+                    "feet": null,
+                    "hands": null,
+                    "weapon": {
+                        "name": "Adaga afiada",
+                        "damage": 15,
+                        "effects": [
+                            "Causa sangramento"
+                        ]
+                    },
+                    "shield": null
+                }
+            }
+        ]
+    },
+    "last_rounds": {
+        0: {
+            "narrative": "Felps entra na taverna, observando o ambiente e os poucos clientes presentes. Ele se aproxima do balcão, onde o taverneiro, Kaelen, o cumprimenta com um olhar desconfiado.",
+            "player_actions": [
+                {
+                    "ask": "Felps pergunta a Kaelen sobre a cidade e o que está acontecendo",
+                    "action": "beber uma cerveja"
+                }
+            ]
+        },
+        1: {
+            "narrative": "Kaelen responde com relutância, mencionando que a cidade está em caos devido a uma névoa misteriosa que começou a se espalhar. Ele também menciona que muitos moradores estão desaparecendo e que há rumores de criaturas estranhas na névoa.",
+            "player_actions": [
+                {
+                    "ask": "Felps pergunta sobre os desaparecimentos"
+                }
+            ]
+        },
+        2: {
+            "narrative": "Kaelen hesita, mas acaba revelando que a névoa começou a se espalhar a partir de um local chamado 'Porto de Ferro', uma antiga cidade industrial. Ele também menciona que um explorador chamado Marcos desapareceu recentemente enquanto investigava o Porto de Ferro.",
+            "player_actions": [
+                {
+                    "ask": "Felps pergunta sobre o Porto de Ferro",
+                    "action": "ir ao Porto de Ferro"
+                }
+            ]
+        }
+    }
+}
