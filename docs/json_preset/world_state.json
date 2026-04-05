@@ -1,25 +1,20 @@
 {
-    "world_state": {
-        "location": {
-            "name": "Taverna",
-            "tags": [
-                "iluminação baixa"
-            ]
-        },
-        "active_npcs": [
-            {
-                "name": "Kaelen",
-                "mood": "suspicious"
-            }
-        ],
-        "weather": "chuvoso",
-        "time_of_day": "noite"
-    },
+    "weather": "chuvoso",
+    "time_of_day": "noite",
     "world_rules": [
         "permadeath",
         "A tecnologia é movida por uma energia misteriosa chamada 'Vazio', que corrompe tudo o que toca",
         "As máquinas são onipresentes, mas todas estão falhando lentamente devido à corrupção do Vazio",
         "A sociedade é dividida entre os 'Engenheiros', que tentam controlar o Vazio, e os 'Puristas', que buscam destruí-lo"
+    ],
+    "location": { // atualizar estrutura para relacionamento correto com Location
+        "name": "Taverna"
+    },
+    "active_npcs": [ // atualizar estrutura para relacionamento correto com character
+        {
+            "name": "Kaelen",
+            "mood": "suspicious"
+        }
     ],
     "player": {
         "name": "Felps",
@@ -106,7 +101,7 @@
             }
         ]
     },
-    "last_rounds": {
+    "last_rounds": { // atualizar estrutura para relacionamento correto com LastRounds
         0: {
             "narrative": "Felps entra na taverna, observando o ambiente e os poucos clientes presentes. Ele se aproxima do balcão, onde o taverneiro, Kaelen, o cumprimenta com um olhar desconfiado.",
             "player_actions": [

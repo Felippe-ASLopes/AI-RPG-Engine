@@ -1,47 +1,57 @@
 {
     "title": "O Despertar do Vazio",
-    "theme": "Dark Fantasy / Steampunk",
-    "tone": "Sombrio e Realista",
+    "theme": [
+        "Dark Fantasy",
+        "Steampunk"
+    ],
+    "tone": [
+        "Sombrio",
+        "Realista"
+    ],
     "world_rules": [
         "permadeath",
         "A tecnologia é movida por uma energia misteriosa chamada 'Vazio', que corrompe tudo o que toca",
         "As máquinas são onipresentes, mas todas estão falhando lentamente devido à corrupção do Vazio",
         "A sociedade é dividida entre os 'Engenheiros', que tentam controlar o Vazio, e os 'Puristas', que buscam destruí-lo"
     ],
-    "territories": [
+    "locations": [
         {
+            "id": "uuid",
             "name": "Cidade de Ferro",
-            "description": "Uma metrópole industrial em ruínas, onde a névoa do Vazio é mais densa",
-            "appearance": "Prédios de metal enferrujado, ruas cobertas de névoa e um ambiente opressivo",
-            "locations": [
-                {
-                    "name": "QG dos Engenheiros",
-                    "description": "Um complexo subterrâneo cheio de máquinas e experimentos, onde os Engenheiros tentam conter o Vazio",
-                    "appearance": "Estruturas de metal enferrujado, luzes piscando e um ambiente claustrofóbico",
-                    "metadata": {
-                        "img_path": "https://example.com/qg_dos_engenheiros.jpg",
-                        "img_alt_path": "https://example.com/qg_dos_engenheiros.md"
-                    }
-                }
+            "type": "CIDADE | VILAREJO | REGIAO_SELVAGEM | BASE | TAVERNA | LOJA | DUNGEON",
+            "description": [
+                "metrópole industrial em ruínas",
+                "névoa do Vazio densa."
             ],
-            "metadata": {
-                "img_path": "https://example.com/qg_dos_engenheiros.jpg",
-                "img_alt_path": "https://example.com/qg_dos_engenheiros.md"
-            }
-        },
-        {
-            "name": "Porto de Ferro",
-            "description": "Uma cidade industrial coberta por névoa ácida.",
-            "appearance": "Docks enferrujados, navios abandonados e um ambiente tóxico",
-            "locations": [
-                {
-                    "name": "Origem do Vazio",
-                    "description": "Um local misterioso onde o Vazio começou a se espalhar, cheio de ruínas e segredos antigos"
+            "appearance": { // criar uma tabela para isso // objeto compartilhado com personagens e itens
+                "id": "uuid-ou-slug-unico",
+                "characteristics": [
+                    "Prédios de metal enferrujado",
+                    "ruas cobertas de névoa"
+                ],
+                "metadata": { // opcional: para referência visual ou geração de imagem
+                    "lora_ref": "kaelen_v1",
+                    "img_path": "...",
+                    "img_alt_path": "..."
                 }
-            ],
-            "metadata": {
-                "img_path": "https://example.com/qg_dos_engenheiros.jpg",
-                "img_alt_path": "https://example.com/qg_dos_engenheiros.jpg"
+            },
+            "atmosphere": {
+                "mood": [
+                    "Opressivo",
+                    "melancólico"
+                ],
+                "lighting": [
+                    "Estilo de iluminação baseado no 'atmosphere"
+                ], // opcional: para referência visual ou geração de imagem
+                "sounds": [ // opcional: para referência narrativa ou geração de áudio
+                    "Engrenagens rangendo",
+                    "Vento sibilante entre o metal"
+                ]
+            },
+            "status": { // criar tabela??
+                "is_discovered": true,
+                "was_accessed": true,
+                "required_item": "cartao_acesso" //opicional  // relacionamento com entitie de itens
             }
         }
     ],
@@ -59,57 +69,152 @@
     ],
     "player": {
         "name": "Felps",
-        "description": "Um aventureiro solitário com um passado misterioso, que se vê envolvido na luta contra o Vazio",
-        "appearance": [
-            "Cabelos escuros",
-            "olhos penetrantes",
-            "uma cicatriz no rosto"
+        "description": [
+            "passado misterioso",
+            "envolvido na luta contra o Vazio"
         ],
+        "identity": [
+            "Humano",
+            "Homem",
+            "adulto"
+        ],
+        "personality": [
+            "Determinado",
+            "corajoso",
+            "cínico",
+            "aventureiro",
+            "solitário"
+        ], // apenas para npcs
         "backstory": "Um ex-soldado em busca de redenção",
-        "skills": [
-            "Combate corpo a corpo",
-            "Tática militar",
-            "Conhecimento de máquinas"
+        "weaknesses": [ // campo para combate ou desafios narrativos, revisar
+            "Não sabe nadar"
         ],
+        "c_appearance": {
+            "id": "uuid-ou-slug-unico",
+            "face": [
+                "lista",
+                "strings"
+            ],
+            "hair": [
+                "lista",
+                "strings"
+            ],
+            "body": [
+                "lista",
+                "strings"
+            ],
+            "outfit": [
+                "lista",
+                "strings"
+            ],
+            "current_state": [
+                "lista",
+                "strings"
+            ],
+            "metadata": { // opcional: para referência visual ou geração de imagem
+                "lora_ref": "..._v1",
+                "img_path": "...",
+                "img_alt_path": "..."
+            }
+        },
+        "skills": [
+            {
+                "name": "lookpicking",
+                "level": 5
+            }
+        ], // level de 1 a 10, Sucesso critico aumenta o nivel em 1, falha critica diminui o nivel em 1? armazena  o total de sucessos e falhas criticas para calculo de nível? armazena effects para buffs e debuffs temporarios relacionado a sucesso/falha critica anteriores?
         "inventory": [
             {
                 "name": "Espada enferrujada",
-                "description": "Uma espada antiga e enferrujada, mas ainda afiada o suficiente para ser útil em combate",
-                "appearance": "Lâmina de metal corroída, com um cabo de couro gasto",
+                "description": "Uma espada antiga e enferrujada, mas ainda afiada o suficiente para ser útil em combate", // deve ser chamada apenas se o jogador chamar @item:Espada enferrujada
+                "appearance": [
+                    "Lâmina de metal corroída",
+                    "cabo de couro gasto"
+                ],
                 "metadata": {
                     "img_path": "https://example.com/qg_dos_engenheiros.jpg",
                     "img_alt_path": "https://example.com/qg_dos_engenheiros.jpg"
                 },
                 "type": "Arma",
                 "effects": [
-                    "+2 de dano corpo a corpo"
+                    {
+                        "type": "dano",
+                        "value": 10
+                    },
+                    {
+                        "type": "status",
+                        "value": "sangramento"
+                    }
                 ],
-                "location": "Cidade de Ferro"
+                "durability": 50 // de 0 a 100, 0 é inutilizável, 100 é novo
             }
-        ],
-        "weaknesses": [
-            "Não sabe nadar"
         ],
         "relationships": [
             {
                 "name": "Marcos",
-                "level": "Amigo",
+                "affinity_level": "Amigo",
                 "can_companion": true,
                 "can_romance": false
             },
             {
                 "name": "Lilla",
-                "level": "Aliado",
+                "affinity_level": "Aliado",
                 "can_companion": true,
                 "can_romance": true
             }
         ],
-        "metadata": {
-            "img_path": "./qg_dos_engenheiros.jpg",
-            "img_alt_path": "./qg_dos_engenheiros.jpg"
+        "status": {
+            "hp": 100,
+            "mana": 50,
+            "stamina": 75,
+            "injuries": [],
+            "active_effects": [ // avaliar qual fica
+                {
+                    "type": "envenenado",
+                    "value": "dano de 5 por turno",
+                    "duration": "3_turnos"
+                },
+                {
+                    "type": "fortalecido",
+                    "value": "+2 Força",
+                    "duration": "permanente"
+                }
+            ]
+        },
+        "equipment": {
+            "head": null,
+            "body": null,
+            "legs": null,
+            "feet": null,
+            "hands": null,
+            "shield": null,
+            "weapon": { // deve remover item do inventário e colocar aqui quando equipado, e vice versa
+                "name": "Espada enferrujada",
+                "description": "Uma espada antiga e enferrujada, mas ainda afiada o suficiente para ser útil em combate",
+                "appearance": [
+                    "Lâmina de metal corroída",
+                    "cabo de couro gasto"
+                ],
+                "metadata": {
+                    "img_path": "https://example.com/qg_dos_engenheiros.jpg",
+                    "img_alt_path": "https://example.com/qg_dos_engenheiros.jpg"
+                },
+                "type": "Arma",
+                "effects": [
+                    {
+                        "type": "dano",
+                        "value": 10
+                    },
+                    {
+                        "type": "status",
+                        "value": "sangramento"
+                    }
+                ],
+                "durability": 50
+            }
         }
     },
-    "characters": [
+    "characters": [ // atualizar estrutura para relacionamento correto com Character
         {
             "name": "Marcos",
             "description": "Um explorador corajoso que desapareceu durante uma expedição ao Porto de Ferro, deixando para trás um diário cheio de pistas sobre o Vazio",
@@ -129,7 +234,7 @@
                 "Não sabe nadar"
             ],
             "location": "Porto de Ferro",
-            "ocupation": "Ferreeiro"
+            "ocupation": "Ferreeiro" // definido em identity
         },
         {
             "name": "Lilla",

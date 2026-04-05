@@ -1,0 +1,12 @@
+{
+    "configs": [
+        {
+            "allow_nsfw": false,
+            "allow_gore": true,
+            "banned_themes": [
+                "tortura"
+            ],
+            "difficulty": "Hard"
+        }
+    ]
+}

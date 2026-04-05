@@ -1,0 +1,13 @@
+{
+    "envents": [
+        {
+            "name": "Invasão do Vazio",
+            "description": "O Vazio começa a se espalhar rapidamente, corrompendo tudo em seu caminho e ameaçando destruir a Cidade de Ferro",
+            "trigger": "Após o jogador investigar o Porto de Ferro",
+            "outcomes": [
+                "A Cidade de Ferro é destruída",
+                "O jogador é forçado a fugir para o QG dos Engenheiros"
+            ]
+        }
+    ]
+}

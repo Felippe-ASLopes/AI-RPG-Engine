@@ -1,0 +1,11 @@
+{
+    "last_rounds": [
+        {
+            "narrative": "Felps entra na taverna, observando o ambiente e os poucos clientes presentes. Ele se aproxima do balcão, onde o taverneiro, Kaelen, o cumprimenta com um olhar desconfiado.",
+            "player_actions": [
+                "[ASK] o que está acontecendo?",
+                "[DO] beber uma cerveja"
+            ]
+        }
+    ]
+}

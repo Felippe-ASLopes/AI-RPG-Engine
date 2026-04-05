@@ -4,7 +4,7 @@
             "id": "uuid",
             "name": "Cidade de Ferro",
             "type": "CIDADE | VILAREJO | REGIAO_SELVAGEM | BASE | TAVERNA | LOJA | DUNGEON",
-            "description": "Uma metrópole industrial em ruínas, onde a névoa do Vazio é mais densa.",
+            "description": ["metrópole industrial em ruínas", "névoa do Vazio densa."],
             "appearance": { // criar uma tabela para isso // objeto compartilhado com personagens e itens
                 "id": "uuid-ou-slug-unico",
                 "characteristics": [

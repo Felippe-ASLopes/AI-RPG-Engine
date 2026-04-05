@@ -19,7 +19,7 @@
     },
     "effects": [
         {
-            "category": "MECANICO | NARRATIVO | ATRIBUTO",
+            "category": "MECANICO | NARRATIVO | ATRIBUTO", // ?
             "type": "dano | cura | status | revelacao | buff",
             "value": "10 | sangramento | 'Floresta Sombria' | +2 Força",
             "duration": "permanente | 3_turnos | uso_unico"

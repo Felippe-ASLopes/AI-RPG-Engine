@@ -1,6 +1,9 @@
 {
     "name": "Felps",
-    "description": "Um aventureiro solitário com um passado misterioso, que se vê envolvido na luta contra o Vazio",
+    "description": [
+        "passado misterioso",
+        "envolvido na luta contra o Vazio"
+    ],
     "identity": [
         "Humano",
         "Homem",
@@ -9,20 +12,42 @@
     "personality": [
         "Determinado",
         "corajoso",
-        "cínico"
+        "cínico",
+        "aventureiro",
+        "solitário"
     ], // apenas para npcs
-    "appearance": {
+    "backstory": "Um ex-soldado em busca de redenção",
+    "weaknesses": [ // campo para combate ou desafios narrativos, revisar
+        "Não sabe nadar"
+    ],
+    "c_appearance": {
+        "id": "uuid-ou-slug-unico",
         "face": [
-            "cicatriz na bochecha esquerda"
+            "lista",
+            "strings"
+        ],
+        "hair": [
+            "lista",
+            "strings"
         ],
         "body": [
-            "atlético"
+            "lista",
+            "strings"
         ],
-        "clothing": [
-            "trajes de soldado veterano"
-        ]
+        "outfit": [
+            "lista",
+            "strings"
+        ],
+        "current_state": [
+            "lista",
+            "strings"
+        ],
+        "metadata": { // opcional: para referência visual ou geração de imagem
+            "lora_ref": "..._v1",
+            "img_path": "...",
+            "img_alt_path": "..."
+        }
     },
-    "backstory": "Um ex-soldado em busca de redenção",
     "skills": [
         {
             "name": "lookpicking",
@@ -55,32 +80,37 @@
             "durability": 50 // de 0 a 100, 0 é inutilizável, 100 é novo
         }
     ],
-    "weaknesses": [
-        "Não sabe nadar"
-    ],
     "relationships": [
         {
             "name": "Marcos",
-            "level": "Amigo",
+            "affinity_level": "Amigo",
             "can_companion": true,
             "can_romance": false
         },
         {
             "name": "Lilla",
-            "level": "Aliado",
+            "affinity_level": "Aliado",
             "can_companion": true,
             "can_romance": true
         }
     ],
-    "metadata": {
-        "img_path": "./qg_dos_engenheiros.jpg",
-        "img_alt_path": "./qg_dos_engenheiros.jpg"
-    },
     "status": {
         "hp": 100,
         "mana": 50,
         "stamina": 75,
-        "injuries": []
+        "injuries": [],
+        "active_effects": [ // avaliar qual fica
+            {
+                "type": "envenenado",
+                "value": "dano de 5 por turno",
+                "duration": "3_turnos"
+            },
+            {
+                "type": "fortalecido",
+                "value": "+2 Força",
+                "duration": "permanente"
+            }
+        ]
     },
     "equipment": {
         "head": null,

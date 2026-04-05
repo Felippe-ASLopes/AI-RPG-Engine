@@ -1,0 +1,11 @@
+{
+    "milestones": [
+        {
+            "id": "uuid",
+            "name": "Milestone 1",
+            "description": "Descrição do milestone",
+            "criteria": ["Critério 1", "Critério 2"], // ?
+            "reward": "Recompensa por completar o milestone" // ?
+        }
+    ]
+}

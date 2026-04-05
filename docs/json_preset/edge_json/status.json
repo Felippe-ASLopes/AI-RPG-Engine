@@ -3,6 +3,18 @@
         "hp": 100,
         "mana": 50,
         "stamina": 75,
-        "injuries": []
+        "injuries": [], // avaliar qual fica
+        "active_effects": [ // avaliar qual fica
+            {
+                "type": "envenenado",
+                "value": "dano de 5 por turno",
+                "duration": "3_turnos"
+            },
+            {
+                "type": "fortalecido",
+                "value": "+2 Força",
+                "duration": "permanente"
+            }
+        ]
     }
 }

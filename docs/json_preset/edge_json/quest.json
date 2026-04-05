@@ -1,0 +1,15 @@
+{
+    "quests": [
+        {
+            "title": "Descobrir a origem da névoa",
+            "description": "Investigar o Porto de Ferro e encontrar pistas sobre a fonte do Vazio",
+            "trigger": [
+                "Chegar ao Porto de Ferro"
+            ],
+            "completion": [
+                "Encontrar o diário do capitão do navio naufragado no Porto de Ferro"
+            ],
+            "is_mandatory": true
+        }
+    ]
+}
