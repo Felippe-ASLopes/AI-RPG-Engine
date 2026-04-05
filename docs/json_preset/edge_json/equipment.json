@@ -1,0 +1,51 @@
+{
+    "equipment": {
+        "head": null, // item.json
+        "body": null, // item.json
+        "legs": null, // item.json
+        "feet": null, // item.json
+        "hands": null, // item.json
+        "shield": null, // item.json
+        "weapon": {
+            "id": "uuid-ou-slug-unico",
+            "name": "Nome do Item",
+            "description": "Descrição narrativa para o jogador.",
+            "type": "ARMA | RUNA | SABEDORIA | CONSUMIVEL | MUNICAO | ARMADURA | FERRAMENTA | MISCELANEA | CHAVE | DOCUMENTO | RECURSO | ROUPA | ACESSORIO",
+            "rarity": "comum | raro | epico | lendario",
+            "quantity": 1,
+            "appearance": {
+                "id": "uuid-ou-slug-unico",
+                "characteristics": [
+                    "lista",
+                    "strings"
+                ],
+                "current_state": [
+                    "lista",
+                    "strings"
+                ],
+                "metadata": { // opcional: para referência visual ou geração de imagem
+                    "lora_ref": "..._v1",
+                    "img_path": "...",
+                    "img_alt_path": "..."
+                }
+            },
+            "effects": [
+                {
+                    "category": "MECANICO | NARRATIVO | ATRIBUTO",
+                    "type": "dano | cura | status | revelacao | buff",
+                    "value": "10 | sangramento | 'Floresta Sombria' | +2 Força",
+                    "duration": "permanente | 3_turnos | uso_unico"
+                }
+            ],
+            "properties": { // ?
+                "durability": {
+                    "current": 50,
+                    "max": 100
+                },
+                "requirements": {
+                    "strength": 12
+                }
+            }
+        }
+    }
+}

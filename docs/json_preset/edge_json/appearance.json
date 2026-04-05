@@ -1,0 +1,18 @@
+{
+    "appearance": {
+        "id": "uuid-ou-slug-unico",
+        "characteristics": [
+            "lista",
+            "strings"
+        ],
+        "current_state": [
+            "lista",
+            "strings"
+        ],
+        "metadata": { // opcional: para referência visual ou geração de imagem
+            "lora_ref": "..._v1",
+            "img_path": "...",
+            "img_alt_path": "..."
+        }
+    }
+}

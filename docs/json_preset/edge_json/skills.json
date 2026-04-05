@@ -1,0 +1,9 @@
+{
+    "skills": [
+        {
+            "id": "uuid-ou-slug-unico",
+            "name": "string",
+            "level": 1 // 1 a 10
+        }
+    ]
+}

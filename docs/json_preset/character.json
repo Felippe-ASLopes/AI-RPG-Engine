@@ -1,6 +1,11 @@
 {
     "name": "Felps",
     "description": "Um aventureiro solitário com um passado misterioso, que se vê envolvido na luta contra o Vazio",
+    "identity": [
+        "Humano",
+        "Homem",
+        "adulto"
+    ],
     "personality": [
         "Determinado",
         "corajoso",

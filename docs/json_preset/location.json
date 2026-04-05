@@ -30,7 +30,7 @@
                     "Vento sibilante entre o metal"
                 ]
             },
-            "status": {
+            "status": { // criar tabela??
                 "is_discovered": true,
                 "was_accessed": true,
                 "required_item": "cartao_acesso" //opicional  // relacionamento com entitie de itens

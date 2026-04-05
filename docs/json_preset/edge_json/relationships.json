@@ -1,0 +1,7 @@
+{
+    "id": "uuid-ou-slug-unico",
+    "name": "Marcos",
+    "level": "Amigo",
+    "can_companion": true,
+    "can_romance": false
+}

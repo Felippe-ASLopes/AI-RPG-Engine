@@ -1,0 +1,8 @@
+{
+    "status": {
+        "hp": 100,
+        "mana": 50,
+        "stamina": 75,
+        "injuries": []
+    }
+}

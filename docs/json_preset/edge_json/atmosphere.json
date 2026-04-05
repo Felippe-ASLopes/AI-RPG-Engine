@@ -1,0 +1,15 @@
+{
+    "atmosphere": {
+        "mood": [
+            "Opressivo",
+            "melancólico"
+        ],
+        "lighting": [
+            "Estilo de iluminação baseado no 'atmosphere"
+        ], // opcional: para referência visual ou geração de imagem
+        "sounds": [ // opcional: para referência narrativa ou geração de áudio
+            "Engrenagens rangendo",
+            "Vento sibilante entre o metal"
+        ]
+    }
+}
