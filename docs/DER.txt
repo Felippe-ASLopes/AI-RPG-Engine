@@ -1,0 +1,361 @@
+erDiagram
+
+    subgraph "ESTRUTURA DE SETUP (PRESET)"
+        CAMPAIGN_Setup ||--o{ CONFIGS_setup : defines
+        CAMPAIGN_Setup ||--o{ EVENTS_setup : plans
+        CAMPAIGN_Setup ||--o{ QUESTS_setup : contains
+        CAMPAIGN_Setup ||--o{ CHARACTERS_setup : initializes
+        CAMPAIGN_Setup ||--o{ ITENS_setup : initializes
+        CAMPAIGN_Setup ||--o{ LOCATIONS_setup : initializes
+
+        CHARACTERS_setup ||--o| C_APPEARANCES_setup : visual
+        CHARACTERS_setup ||--o| STATUS_setup : base_stats
+        CHARACTERS_setup ||--o| EQUIPMENT_setup : default_gear
+        CHARACTERS_setup ||--o{ SKILLS_setup : starting_skills
+        CHARACTERS_setup ||--o{ RELATIONSHIPS_setup : initial_bonds
+        CHARACTERS_setup ||--o{ INVENTORIES_setup : owns
+
+        ITENS_setup ||--o| E_APPEARANCES_setup : visual
+        ITENS_setup ||--o{ INVENTORIES_setup : stored_in
+        ITENS_setup ||--o{ EFFECTS_setup : triggers
+
+        LOCATIONS_setup ||--o| E_APPEARANCES_setup : visual
+        LOCATIONS_setup ||--o| ATMOSPHERES_setup : environment
+
+        C_APPEARANCES_setup ||--o| METADATA_setup : has_info
+        E_APPEARANCES_setup ||--o| METADATA_setup : has_info
+
+        CAMPAIGN_setup {
+            string id PK
+            string title
+            list theme
+            list tone
+            list world_rules
+        }
+
+        CHARACTERS_setup {
+            string id PK
+            string campaign_base_id FK
+            string name
+            list description
+            list identity
+            list personality
+            string backstory
+            list weaknesses
+            list mood
+        }
+
+        ITENS_setup {
+            string id PK
+            string campaign_base_id FK
+            string name
+            list description
+            string type
+            string rarity
+        }
+
+        LOCATIONS_setup {
+            string id PK
+            string campaign_base_id FK
+            string name
+            string type
+            list description
+            json status
+        }
+
+        CONFIGS_setup {
+            string id PK
+            string campaign_base_id FK
+            bool allow_nsfw
+            bool allow_gore
+            list banned_themes
+            string difficulty
+        }
+
+        EVENTS_setup {
+            string id PK
+            string campaign_base_id FK
+            string name
+            string description
+            string trigger
+            list outcomes
+            string status "Inactive | Started"
+        }
+
+        QUESTS_setup {
+            string title PK
+            string campaign_base_id FK
+            string description
+            list trigger
+            list completion
+            bool is_mandatory
+            bool was_completed
+        }
+
+        STATUS_setup {
+            string id PK
+            string character_id FK
+            int hp
+            int mana
+            int stamina
+            list injuries
+            list active_effects
+        }
+
+        EQUIPMENT_setup {
+            string id PK
+            string character_id FK
+            string weapon_id FK
+            string shield_id FK
+            string head_id FK
+            string body_id FK
+            string legs_id FK
+            string feet_id FK
+            string hands_id FK
+        }
+
+        SKILLS_setup {
+            string id PK
+            string character_id FK
+            string name
+            int level
+        }
+
+        RELATIONSHIPS_setup {
+            string id PK
+            string character_id FK
+            string character_target_id FK
+            string name
+            string affinity_level
+            bool can_companion
+            bool can_romance
+        }
+
+        C_APPEARANCES_setup {
+            string id PK
+            string character_id FK
+            list face
+            list hair
+            list body
+            list outfit
+            list current_state
+        }
+
+        E_APPEARANCES_setup {
+            string id PK
+            string entity_id FK
+            list characteristics
+            list current_state
+        }
+
+        METADATA_setup {
+            string id PK
+            string id_appearance FK
+            string lora_ref
+            string img_path
+            string img_alt_path
+        }
+
+        EFFECTS_setup {
+            string id PK
+            string item_id FK
+            string category
+            string type
+            string value
+            string duration
+        }
+
+        ATMOSPHERES_setup {
+            string id PK
+            string location_id FK
+            list mood
+            list lighting
+            list sounds
+        }
+
+        INVENTORIES_setup {
+            string id PK
+            string character_id FK
+            string item_id FK
+            int quantity
+        }
+    end
+
+    subgraph "ESTRUTURA DE RUNTIME (WORLD STATE)"
+        CAMPAIGN_STATE ||--o| LOCATIONS : current_place
+        CAMPAIGN_STATE ||--o{ EVENTS : history
+        CAMPAIGN_STATE ||--o{ LAST_ROUNDS : timeline
+        CAMPAIGN_STATE ||--o{ ACTIVE_CHARACTERS : in_scene_characters
+
+        CHARACTERS ||--o{ ACTIVE_CHARACTERS : in_scene_characters
+        CHARACTERS ||--o| C_APPEARANCES : visual
+        CHARACTERS ||--o| STATUS : tracks
+        CHARACTERS ||--o| EQUIPMENT : equips
+        CHARACTERS ||--o{ SKILLS : masters
+        CHARACTERS ||--o{ RELATIONSHIPS : knows
+        CHARACTERS ||--o{ INVENTORIES : owns
+
+        ITENS ||--o| E_APPEARANCES : visual
+        ITENS ||--o{ INVENTORIES : stored_in
+        ITENS ||--o{ EFFECTS : triggers
+
+        LOCATIONS ||--o| E_APPEARANCES : visual
+        LOCATIONS ||--o| ATMOSPHERES : environment
+
+        C_APPEARANCES ||--o| METADATA : has_info
+        E_APPEARANCES ||--o| METADATA : has_info
+
+        CAMPAIGN_STATE {
+            string id PK
+            string campaign_base_id FK
+            string title
+            list theme
+            list tone
+            string weather
+            string time_of_day
+            list world_rules
+        }
+
+        LAST_ROUNDS {
+            int round_number PK "AUTO_INCREMENT"
+            string campaign_id FK
+            string narrative
+            list player_actions
+        }
+
+        ACTIVE_CHARACTERS {
+            string id PK
+            string campaign_id FK
+            string character_id FK
+            string role_type "Player | Companion | Enemy | NPC"
+            int turn_order
+        }
+
+        EVENTS {
+            string id PK
+            string campaign_id FK
+            string name
+            string description
+            string trigger
+            list outcomes
+            string status "Inactive | Started | Completed"
+        }
+
+        CHARACTERS {
+            string id PK
+            string campaign_id FK
+            string name
+            list description
+            list identity
+            list personality
+            string backstory
+            list weaknesses
+            list mood
+        }
+
+        ITENS {
+            string id PK
+            string campaign_id FK
+            string name
+            list description
+            string type
+            string rarity
+        }
+
+        INVENTORIES {
+            string id PK
+            string character_id FK
+            string item_id FK
+            int quantity
+        }
+
+        LOCATIONS {
+            string id PK
+            string campaign_id FK
+            string name
+            string type
+            list description
+            json status
+        }
+
+        STATUS {
+            string id PK
+            string character_id FK
+            int hp
+            int mana
+            int stamina
+            list injuries
+            list active_effects
+        }
+
+        EQUIPMENT {
+            string id PK
+            string character_id FK
+            string weapon_id FK
+            string shield_id FK
+            string head_id FK
+            string body_id FK
+            string legs_id FK
+            string feet_id FK
+            string hands_id FK
+        }
+
+        SKILLS {
+            string id PK
+            string character_id FK
+            string name
+            int level
+        }
+
+        RELATIONSHIPS {
+            string id PK
+            string character_id FK
+            string character_target_id FK
+            string name
+            string affinity_level
+            bool can_companion
+            bool can_romance
+        }
+
+        ATMOSPHERES {
+            string id PK
+            string location_id FK
+            list mood
+            list lighting
+            list sounds
+        }
+
+        EFFECTS {
+            string id PK
+            string item_id FK
+            string category
+            string type
+            string value
+            string duration
+        }
+
+        C_APPEARANCES {
+            string id PK
+            string character_id FK
+            list face
+            list hair
+            list body
+            list outfit
+            list current_state
+        }
+
+        E_APPEARANCES {
+            string id PK
+            string entity_id FK
+            list characteristics
+            list current_state
+        }
+
+        METADATA {
+            string id PK
+            string entity_id FK
+            string lora_ref
+            string img_path
+            string img_alt_path
+        }
+    end
